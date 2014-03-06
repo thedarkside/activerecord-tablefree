@@ -38,7 +38,7 @@ end
 ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::Severity::UNKNOWN
 
-shared_examples_for "an active record" do
+shared_examples_for "an active record instance" do
   it { should respond_to :id }
   it { should respond_to :id= }
   it { should respond_to :name }
@@ -62,7 +62,7 @@ shared_examples_for "a nested active record" do
     specify do
       (subject.arm_rests << ArmRest.new({:name => 'nice arm_rest'})).should have(1).items
     end
-    describe "result" do
+    describe "appending two children" do
       before(:each) do
         subject.arm_rests << [ArmRest.new({:name => 'left'}),
                               ArmRest.new({:name => 'right'})]
@@ -91,55 +91,55 @@ shared_examples_for "a nested active record" do
 end
 
 shared_examples_for "a tableless model with fail_fast" do
-  it_behaves_like "an active record"
-  describe "class" do
-    case ActiveRecord::VERSION::MAJOR
-    when 2
-      describe "#find" do
-        it "raises ActiveRecord::Tableless::NoDatabase" do
-          expect { Chair.find(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-        end
-      end
-      describe "#find(:all)" do
-        it "raises ActiveRecord::Tableless::NoDatabase" do
-          expect { Chair.find(:all) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-        end
-      end
-    when 3
-      describe "#all" do
-        it "raises ActiveRecord::Tableless::NoDatabase" do
-          expect { Chair.all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-        end
-      end
-    when 4
-      describe "#all" do
-        it "raises ActiveRecord::Tableless::NoDatabase" do
-          expect { Chair.all }.to_not raise_exception
-        end
-      end
-      describe "#all[]" do
-        it "raises ActiveRecord::Tableless::NoDatabase" do
-          expect { Chair.all[0] }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-        end
+  case ActiveRecord::VERSION::MAJOR
+  when 2
+    describe "#find" do
+      it "raises ActiveRecord::Tableless::NoDatabase" do
+        expect { subject.find(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
       end
     end
-    describe "#create" do
+    describe "#find(:all)" do
       it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { Chair.create(:name => 'Jarl') }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+        expect { subject.find(:all) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
       end
     end
-    describe "#destroy" do
+  when 3
+    describe "#all" do
       it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { Chair.destroy(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+        expect { subject.all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
       end
     end
-    describe "#destroy_all" do
+  when 4
+    describe "#all" do
       it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { Chair.destroy_all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+        expect { subject.all }.to_not raise_exception
+      end
+    end
+    describe "#all[]" do
+      it "raises ActiveRecord::Tableless::NoDatabase" do
+        expect { subject.all[0] }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
       end
     end
   end
+  describe "#create" do
+    it "raises ActiveRecord::Tableless::NoDatabase" do
+      expect { subject.create(:name => 'Jarl') }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    end
+  end
+  describe "#destroy" do
+    it "raises ActiveRecord::Tableless::NoDatabase" do
+      expect { subject.destroy(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    end
+  end
+  describe "#destroy_all" do
+    it "raises ActiveRecord::Tableless::NoDatabase" do
+      expect { subject.destroy_all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    end
+  end
+end
 
+shared_examples_for "a tableless model instance with fail_fast" do
+  it_behaves_like "an active record instance"
   describe "#save" do
     it "raises ActiveRecord::Tableless::NoDatabase" do
       expect { subject.save }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
@@ -162,86 +162,98 @@ shared_examples_for "a tableless model with fail_fast" do
   end
 end
 
-describe "Tableless with fail_fast" do
+describe "Tableless model with fail_fast" do
   before(:all) {make_tableless_model(nil, nil)}
   after(:all){ remove_models }
-  subject { Chair.new }
+  subject { Chair }
   it_behaves_like "a tableless model with fail_fast"
+  describe "instance" do
+    subject { Chair.new(:name => 'Jarl') }
+    it_behaves_like "a tableless model instance with fail_fast"
+  end
 end
 
 describe "Tableless nested with fail_fast" do
   before(:all) {make_tableless_model(nil, true)}
   after(:all){ remove_models }
+  subject { Chair }
+  it_behaves_like "a tableless model with fail_fast"
   describe "#new" do
     it "accepts attributes" do
-      Chair.new(:name => "Jarl").should be_an_instance_of(Chair)
+      subject.new(:name => "Jarl").should be_an_instance_of(subject)
     end
     it "assign attributes" do
-      Chair.new(:name => "Jarl").name.should == "Jarl"
-    end
-    describe "with nested models" do
-      subject do
-        Chair.new(:name => "Jarl",
-                  :arm_rests => [
-                                 ArmRest.new(:name => 'left'),
-                                 ArmRest.new(:name => 'right'),
-                                ])
-      end
-      it {should be_an_instance_of(Chair) }
-      it {should have(2).arm_rests }
-    end
-    describe "with nested attributes" do
-      subject do
-        Chair.new(:name => "Jarl",
-                  :arm_rests_attributes => [
-                                            {:name => 'left'},
-                                            {:name => 'right'},
-                                           ])
-      end
-      it {should be_an_instance_of(Chair)}
-      it {should have(2).arm_rests }
+      subject.new(:name => "Jarl").name.should == "Jarl"
     end
   end
-  subject { Chair.new }
-  it_behaves_like "a tableless model with fail_fast"
-  it_behaves_like "a nested active record"
-  describe "#update_attributes" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect do
-        subject.update_attributes(:arm_chair => {:name => 'nice arm_rest'})
-      end.to raise_exception(StandardError)
+  describe "instance" do
+    subject { Chair.new(:name => 'Jarl') }
+    it_behaves_like "a tableless model instance with fail_fast"
+    it_behaves_like "a nested active record"
+    describe "#update_attributes" do
+      it "raises ActiveRecord::Tableless::NoDatabase" do
+        expect do
+          subject.update_attributes(:arm_rests => {:name => 'nice arm_rest'})
+        end.to raise_exception(StandardError)
+      end
     end
+  end
+  describe "instance with nested models" do
+    subject do
+      Chair.new(:name => "Jarl",
+                :arm_rests => [
+                               ArmRest.new(:name => 'left'),
+                               ArmRest.new(:name => 'right'),
+                              ])
+    end
+    it {should be_an_instance_of(Chair) }
+    it {should have(2).arm_rests }
+  end
+  describe "instance with nested attributes" do
+    subject do
+      Chair.new(:name => "Jarl",
+                :arm_rests_attributes => [
+                                          {:name => 'left'},
+                                          {:name => 'right'},
+                                         ])
+    end
+    it {should be_an_instance_of(Chair)}
+    it {should have(2).arm_rests }
   end
 end
 
-shared_examples_for "a succeeding database" do
-  it_behaves_like "an active record"
-  describe "class" do
-    case ActiveRecord::VERSION::MAJOR
-    when 2
-      describe "#find" do
-        it "raises ActiveRecord::RecordNotFound" do
-          expect { Chair.find(314) }.to raise_exception(ActiveRecord::RecordNotFound)
-        end
-      end
-      describe "#find(:all)" do
-        specify { Chair.find(:all).should == []}
-      end
-    when 3, 4
-      describe "#all" do
-        specify { Chair.all.should == []}
+##
+## Succeeding database
+##
+shared_examples_for "a model with succeeding database" do
+  case ActiveRecord::VERSION::MAJOR
+  when 2
+    describe "#find" do
+      it "raises ActiveRecord::RecordNotFound" do
+        expect { subject.find(314) }.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end
-    describe "#create" do
-      specify { Chair.create(:name => 'Jarl').should be_an_instance_of(Chair) }
+    describe "#find(:all)" do
+      specify { subject.find(:all).should == []}
     end
-    describe "#destroy" do
-      specify { Chair.destroy(1).should be_an_instance_of(Chair) }
-    end
-    describe "#destroy_all" do
-      specify { Chair.destroy_all.should == [] }
+  when 3, 4
+    describe "#all" do
+      specify { subject.all.should == []}
     end
   end
+  describe "#create" do
+    specify { subject.create(:name => 'Jarl').should be_an_instance_of(subject) }
+  end
+  describe "#destroy" do
+    specify { subject.destroy(1).should be_an_instance_of(subject) }
+  end
+  describe "#destroy_all" do
+    specify { subject.destroy_all.should == [] }
+  end
+end
+
+shared_examples_for "an instance with succeeding database" do
+  it_behaves_like "an active record instance"
 
   describe "#save" do
     specify { subject.save.should == true }
@@ -258,7 +270,7 @@ shared_examples_for "a succeeding database" do
   end
 end
 
-describe "Active record with real database" do
+describe "ActiveRecord with real database" do
   ##This is only here to ensure that the shared examples are actually behaving like a real database.
   before(:all) do
     FileUtils.mkdir_p "tmp"
@@ -274,13 +286,21 @@ describe "Active record with real database" do
     ActiveRecord::Base.clear_all_connections!
   end
 
-  subject { Chair.new(:name => 'Jarl') }
-  it_behaves_like "a succeeding database"
+  subject { Chair }
+  it_behaves_like "a model with succeeding database"
+  describe "instance" do
+    subject { Chair.new(:name => 'Jarl') }
+    it_behaves_like "an instance with succeeding database"
+  end
 end
 
-describe "Tableless with succeeding database" do
+describe "Tableless model with succeeding database" do
   before(:all) { make_tableless_model(:pretend_success, nil) }
   after(:all){ remove_models }
-  subject { Chair.new(:name => 'Jarl') }
-  it_behaves_like "a succeeding database"
+  subject { Chair }
+  it_behaves_like "a model with succeeding database"
+  describe "instance" do
+    subject { Chair.new(:name => 'Jarl') }
+    it_behaves_like "an instance with succeeding database"
+  end
 end
