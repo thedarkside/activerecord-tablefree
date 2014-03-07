@@ -31,22 +31,6 @@ Given /^I run a "(.*?)" generator to generate a "(.*?)" scaffold with "(.*?)"$/ 
   step %[I successfully run `bundle exec #{generator_command} #{generator_name} #{model_name} #{attributes}`]
 end
 
-Given /^I add this snippet to the User model:$/ do |snippet|
-  file_name = "app/models/user.rb"
-  in_current_dir do
-    content = File.read(file_name)
-    File.open(file_name, 'w') { |f| f << content.sub(/end\Z/, "#{snippet}\nend") }
-  end
-end
-
-Given /^I add this snippet to the "(.*?)" controller:$/ do |controller_name, snippet|
-  file_name = "app/controllers/#{controller_name}_controller.rb"
-  in_current_dir do
-    content = File.read(file_name)
-    File.open(file_name, 'w') { |f| f << content.sub(/end\Z/, "#{snippet}\nend") }
-  end
-end
-
 Given /^I start the rails application$/ do
   in_current_dir do
     require "./config/environment"
