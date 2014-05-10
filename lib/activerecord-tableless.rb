@@ -228,7 +228,7 @@ module ActiveRecord
         ""
       end
 
-      %w(create create_record update update_record).each do |method_name|
+      %w(create create_record _create_record update update_record _update_record).each do |method_name|
         define_method(method_name) do |*args|
           case self.class.tableless_options[:database]
           when :pretend_success
