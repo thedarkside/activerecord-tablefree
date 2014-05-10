@@ -47,7 +47,7 @@ Supported Versions
 Supported version are ActiveRecord version **2.3.x**, **3.0.x**
 series, **3.2.x** series and **4.x** series
 
-You may be able to make it work with 3.1.X, but you should expect to
+You may be able to make it work with 3.1.x, but you should expect to
 put some time in it.
 
 Usage
