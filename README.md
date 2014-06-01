@@ -14,7 +14,7 @@ Why, why, why
 Why would you ever consider this gem as opposed to ActiveModel.
 
 In Rails 2 ActiveModel does not exists (this is when it all started;
-see Hitosry section)
+see History section)
 
 In Rails 3 there is an Active Model API, where you can use some
 features of Active Record in other classes. Yehuda Katz has written
