@@ -26,9 +26,10 @@ Gem::Specification.new do |gem|
   #  gem.add_development_dependency("rails") # This is in the appraisal gemfiles
   gem.add_development_dependency('sqlite3', '~> 1.3')
 
-  gem.add_development_dependency('appraisal', '~> 0.5')
+  gem.add_development_dependency('appraisal', '~> 1.0')
   gem.add_development_dependency('cucumber', '~> 1.1')
-  gem.add_development_dependency("rspec", '> 0')
+  gem.add_development_dependency("rspec", '~> 3.1')
+  gem.add_development_dependency("rspec-collection_matchers", '~> 1.0')
   gem.add_development_dependency('aruba', '>= 0.5')
 
   ##Specifying upper limit version for ruby 1.8.7

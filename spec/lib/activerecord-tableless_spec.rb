@@ -2,6 +2,7 @@ require 'sqlite3'
 require 'active_record'
 require 'activerecord-tableless'
 require 'logger'
+require 'spec_helper'
 
 def make_tableless_model(database = nil, nested = nil)
   eval <<EOCLASS
@@ -45,9 +46,9 @@ shared_examples_for "an active record instance" do
   it { should respond_to :name= }
   it { should respond_to :update_attributes }
   describe "#attributes=" do
-    before(:each){ subject.attributes=({:name => 'Jarl Friis'}) }
+    before(:example){ subject.attributes=({:name => 'Jarl Friis'}) }
     it "assign attributes" do
-      subject.name.should == 'Jarl Friis'
+      expect(subject.name).to eq 'Jarl Friis'
     end
   end
 end
@@ -55,37 +56,37 @@ end
 shared_examples_for "a nested active record" do
   describe "conllection#build" do
     specify do
-      subject.arm_rests.build({:name => 'nice arm_rest'}).should be_an_instance_of(ArmRest)
+      expect(subject.arm_rests.build({:name => 'nice arm_rest'})).to be_an_instance_of(ArmRest)
     end
   end
   describe "conllection#<<" do
     specify do
-      (subject.arm_rests << ArmRest.new({:name => 'nice arm_rest'})).should have(1).items
+      expect(subject.arm_rests << ArmRest.new({:name => 'nice arm_rest'})).to have(1).items
     end
-    describe "appending two children" do
-      before(:each) do
+    describe 'appending two children' do
+      before(:example) do
         subject.arm_rests << [ArmRest.new({:name => 'left'}),
                               ArmRest.new({:name => 'right'})]
       end
       it "assigns nested attributes" do
-        subject.arm_rests[0].name.should == 'left'
-        subject.arm_rests[1].name.should == 'right'
+        expect(subject.arm_rests[0].name).to eq 'left'
+        expect(subject.arm_rests[1].name).to eq 'right'
       end
     end
   end
   describe "#attributes=" do
-    before(:each){ subject.attributes=({ :name => 'Jarl Friis',
-                                         :arm_rests_attributes => [
-                                                                   {:name => 'left'},
-                                                                   {:name => 'right'}
-                                                                  ]
-                                       }) }
+    before(:example){ subject.attributes=({ :name => 'Jarl Friis',
+                                            :arm_rests_attributes => [
+                                                                      {:name => 'left'},
+                                                                      {:name => 'right'}
+                                                                     ]
+                                          }) }
     it "assigns attributes" do
-      subject.name.should == 'Jarl Friis'
+      expect(subject.name).to eq 'Jarl Friis'
     end
     it "assigns nested attributes" do
-      subject.arm_rests[0].name.should == 'left'
-      subject.arm_rests[1].name.should == 'right'
+      expect(subject.arm_rests[0].name).to eq 'left'
+      expect(subject.arm_rests[1].name).to eq 'right'
     end
   end
 end
@@ -163,8 +164,8 @@ shared_examples_for "a tableless model instance with fail_fast" do
 end
 
 describe "Tableless model with fail_fast" do
-  before(:all) {make_tableless_model(nil, nil)}
-  after(:all){ remove_models }
+  before(:context) {make_tableless_model(nil, nil)}
+  after(:context){ remove_models }
   subject { Chair }
   it_behaves_like "a tableless model with fail_fast"
   describe "instance" do
@@ -174,16 +175,16 @@ describe "Tableless model with fail_fast" do
 end
 
 describe "Tableless nested with fail_fast" do
-  before(:all) {make_tableless_model(nil, true)}
-  after(:all){ remove_models }
+  before(:context) {make_tableless_model(nil, true)}
+  after(:context){ remove_models }
   subject { Chair }
   it_behaves_like "a tableless model with fail_fast"
   describe "#new" do
     it "accepts attributes" do
-      subject.new(:name => "Jarl").should be_an_instance_of(subject)
+      expect(subject.new(:name => "Jarl")).to be_an_instance_of(subject)
     end
     it "assign attributes" do
-      subject.new(:name => "Jarl").name.should == "Jarl"
+      expect(subject.new(:name => "Jarl").name).to eq "Jarl"
     end
   end
   describe "instance" do
@@ -234,21 +235,21 @@ shared_examples_for "a model with succeeding database" do
       end
     end
     describe "#find(:all)" do
-      specify { subject.find(:all).should == []}
+      specify { expect(subject.find(:all)).to eq []}
     end
   when 3, 4
     describe "#all" do
-      specify { subject.all.should == []}
+      specify { expect(subject.all).to eq []}
     end
   end
   describe "#create" do
-    specify { subject.create(:name => 'Jarl').should be_an_instance_of(subject) }
+    specify { expect(subject.create(:name => 'Jarl')).to be_an_instance_of(subject) }
   end
   describe "#destroy" do
-    specify { subject.destroy(1).should be_an_instance_of(subject) }
+    specify { expect(subject.destroy(1)).to be_an_instance_of(subject) }
   end
   describe "#destroy_all" do
-    specify { subject.destroy_all.should == [] }
+    specify { expect(subject.destroy_all).to eq [] }
   end
 end
 
@@ -256,23 +257,23 @@ shared_examples_for "an instance with succeeding database" do
   it_behaves_like "an active record instance"
 
   describe "#save" do
-    specify { subject.save.should == true }
+    specify { expect(subject.save).to eq true }
   end
   describe "#save!" do
-    specify { subject.save!.should == true }
+    specify { expect(subject.save!).to eq true }
   end
   describe "#reload" do
     before { subject.save! }
-    specify { subject.reload.should == subject }
+    specify { expect(subject.reload).to eq subject }
   end
   describe "#update_attributes" do
-    specify { subject.update_attributes(:name => 'Jarl Friis').should == true }
+    specify { expect(subject.update_attributes(:name => 'Jarl Friis')).to eq true }
   end
 end
 
 describe "ActiveRecord with real database" do
   ##This is only here to ensure that the shared examples are actually behaving like a real database.
-  before(:all) do
+  before(:context) do
     FileUtils.mkdir_p "tmp"
     ActiveRecord::Base.establish_connection(:adapter  => 'sqlite3', :database => 'tmp/test.db')
     ActiveRecord::Base.connection.execute("drop table if exists chairs")
@@ -281,7 +282,7 @@ describe "ActiveRecord with real database" do
     class Chair < ActiveRecord::Base
     end
   end
-  after(:all) do
+  after(:context) do
     remove_models
     ActiveRecord::Base.clear_all_connections!
   end
@@ -295,8 +296,8 @@ describe "ActiveRecord with real database" do
 end
 
 describe "Tableless model with succeeding database" do
-  before(:all) { make_tableless_model(:pretend_success, nil) }
-  after(:all){ remove_models }
+  before(:context) { make_tableless_model(:pretend_success, nil) }
+  after(:context){ remove_models }
   subject { Chair }
   it_behaves_like "a model with succeeding database"
   describe "instance" do
