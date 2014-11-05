@@ -85,11 +85,21 @@ module ActiveRecord
       end
 
       # Register a new column.
-      def column(name, sql_type = nil, default = nil, null = true)
-        tableless_options[:columns] << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+
+      if ActiveRecord::VERSION::STRING >= "4.2.0"
+        # This stopped working in Rails 4.2.0.betaX.  This hopefully fixes it.
+        def column(name, sql_type = nil, default = nil, null = true)
+          # from https://github.com/activescaffold/active_scaffold/blob/master/lib/active_scaffold/tableless.rb
+          cast_type = ActiveRecord::Base.connection.send :lookup_cast_type, sql_type
+          tableless_options[:columns] << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, cast_type, sql_type.to_s, null)
+        end
+      else
+        def column(name, sql_type = nil, default = nil, null = true)
+          tableless_options[:columns] << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+        end
       end
 
-      # Register a set of colums with the same SQL type
+      # Register a set of columns with the same SQL type
       def add_columns(sql_type, *args)
         args.each do |col|
           column col, sql_type
