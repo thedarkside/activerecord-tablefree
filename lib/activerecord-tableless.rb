@@ -224,6 +224,16 @@ module ActiveRecord
             Integer(limit)
           end
         end
+
+        # This is used in the StatementCache object. It returns an object that
+        # can be used to query the database repeatedly.
+        def conn.cacheable_query(arel) # :nodoc:
+          if prepared_statements
+            ActiveRecord::StatementCache.query visitor, arel.ast
+          else
+            ActiveRecord::StatementCache.partial_query visitor, arel.ast, collector
+          end
+        end
         conn
       end
 
