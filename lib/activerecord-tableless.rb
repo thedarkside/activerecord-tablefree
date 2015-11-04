@@ -87,7 +87,6 @@ module ActiveRecord
       end
 
       # Register a new column.
-
       if ActiveRecord::VERSION::STRING >= "4.2.0"
         def column(name, sql_type = nil, default = nil, null = true)
           cast_type = "ActiveRecord::Type::#{sql_type.to_s.camelize}".constantize.new
@@ -125,6 +124,25 @@ module ActiveRecord
       end
 
       case ActiveRecord::VERSION::MAJOR
+      when 2
+        def find_from_ids(*args)
+          case tableless_options[:database]
+          when :pretend_success
+            raise ActiveRecord::RecordNotFound.new("Couldn't find #{self} with ID=#{args[0].to_s}")
+
+          when :fail_fast
+            raise NoDatabase.new("Can't #find_from_ids on Tableless class")
+          end
+        end
+
+        def find_every(*args)
+          case tableless_options[:database]
+          when :pretend_success
+            []
+          when :fail_fast
+            raise NoDatabase.new("Can't #find_every on Tableless class")
+          end
+        end
       when 3
         def all(*args)
           case tableless_options[:database]
@@ -163,8 +181,11 @@ module ActiveRecord
         true
       end
 
-      def table_exists?
-        false
+      if ActiveRecord::VERSION::MAJOR < 3
+      else
+        def table_exists?
+          false
+        end
       end
     end
 
