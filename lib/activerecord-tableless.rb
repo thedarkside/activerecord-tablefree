@@ -124,6 +124,7 @@ module ActiveRecord
       end
 
       case ActiveRecord::VERSION::MAJOR
+        
       when 2
         def find_from_ids(*args)
           case tableless_options[:database]
@@ -154,6 +155,16 @@ module ActiveRecord
 
         end
       when 4
+        def find_by_sql(*args)
+          case tableless_options[:database]
+          when :pretend_success
+            []
+          when :fail_fast
+            raise NoDatabase.new("Can't #find_by_sql on Tableless class")
+          end
+
+        end
+      when 5
         def find_by_sql(*args)
           case tableless_options[:database]
           when :pretend_success
