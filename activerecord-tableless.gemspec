@@ -33,7 +33,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('aruba', '>= 0.5')
 
   ##Specifying upper limit version for ruby 1.8.7
-  gem.add_development_dependency('nokogiri', '< 1.6')
+  gem.add_development_dependency('nokogiri')
   gem.add_development_dependency('capybara', '< 2.1')
 
 #  gem.add_development_dependency('launchy', '~> 2.1')
