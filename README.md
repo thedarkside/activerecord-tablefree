@@ -98,6 +98,7 @@ Install development libraries
 
 When downloaded, you can start issuing the commands like
 
+    gem install bundler -v '~> 1.12.0'
     bundle install
     bundle update
     bundle exec appraisal generate
