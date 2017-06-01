@@ -99,6 +99,7 @@ Install development libraries
 When downloaded, you can start issuing the commands like
 
     bundle install
+    bundle update
     bundle exec appraisal generate
     bundle exec appraisal install
     bundle exec appraisal rake all
