@@ -13,8 +13,7 @@ Why, why, why
 
 Why would you ever consider this gem as opposed to ActiveModel.
 
-In Rails 2 ActiveModel does not exists (this is when it all started;
-see History section)
+It all started in Rails 2 (see History section). In rails 2 ActiveModel did not exists. Nowadays rails 2.x series is no longer supported.
 
 In Rails 3 there is an Active Model API, where you can use some
 features of Active Record in other classes. Yehuda Katz has written
@@ -44,8 +43,8 @@ Include the gem in your Gemfile:
 Supported Versions
 ------------------
 
-Supported version are ActiveRecord version **2.3.x**, **3.0.x**
-series, **3.2.x** series and **4.x** series
+Supported version are ActiveRecord version **3.0.x**
+series, **3.2.x** series and **4.1.x** series
 
 You may be able to make it work with 3.1.x, but you should expect to
 put some time in it.
@@ -81,10 +80,6 @@ And in the controller:
       end
     end
 
-For Rails 2.3.x series you need to add this line in the top of your model file.
-
-    require 'activerecord-tableless'
-
 If you wish (this is not recommended), you can pretend you have a succeeding database by using
 
     has_no_table :database => :pretend_success
@@ -97,12 +92,16 @@ To start develop, please download the source code
 
     git clone git://github.com/softace/activerecord-tableless.git
 
+Install development libraries
+
+    sudo apt-get install -y libsqlite3-dev libxml2-dev libxslt-dev
+
 When downloaded, you can start issuing the commands like
 
     bundle install
-    bundle exec rake appraisal:gemfiles
-    bundle exec rake appraisal:install
-    bundle exec rake appraisal
+    bundle exec appraisal generate
+    bundle exec appraisal install
+    bundle exec appraisal rake all
 
 Or you can see what other options are there:
 

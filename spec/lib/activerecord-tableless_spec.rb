@@ -93,17 +93,6 @@ end
 
 shared_examples_for "a tableless model with fail_fast" do
   case ActiveRecord::VERSION::MAJOR
-  when 2
-    describe "#find" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { subject.find(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-      end
-    end
-    describe "#find(:all)" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { subject.find(:all) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
-      end
-    end
   when 3
     describe "#all" do
       it "raises ActiveRecord::Tableless::NoDatabase" do
@@ -227,20 +216,8 @@ end
 ## Succeeding database
 ##
 shared_examples_for "a model with succeeding database" do
-  case ActiveRecord::VERSION::MAJOR
-  when 2
-    describe "#find" do
-      it "raises ActiveRecord::RecordNotFound" do
-        expect { subject.find(314) }.to raise_exception(ActiveRecord::RecordNotFound)
-      end
-    end
-    describe "#find(:all)" do
-      specify { expect(subject.find(:all)).to eq []}
-    end
-  when 3, 4
-    describe "#all" do
-      specify { expect(subject.all).to eq []}
-    end
+  describe "#all" do
+    specify { expect(subject.all).to eq []}
   end
   describe "#create" do
     specify { expect(subject.create(:name => 'Jarl')).to be_an_instance_of(subject) }
