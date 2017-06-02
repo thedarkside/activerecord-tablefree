@@ -15,3 +15,9 @@ gemfile:
   - gemfiles/rails40.gemfile
   - gemfiles/rails41.gemfile
   - gemfiles/rails42.gemfile
+matrix:
+  include:
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails42.gemfile
+  - rvm: 2.4.1
+    gemfile: gemfiles/rails42.gemfile
