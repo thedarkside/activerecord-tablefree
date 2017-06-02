@@ -43,11 +43,35 @@ Include the gem in your Gemfile:
 Supported Versions
 ------------------
 
-Supported version are ActiveRecord version **3.0.x**
-series, **3.2.x** series and **4.1.x** series
+Supported ruby version are
+
+  * **2.2.x** series higher than 2.2.2
+  * **2.3.x** series
+
+If you are using Ruby version < 2.2.2 you can use the gem version <
+2.0 like this
+
+    gem "activerecord-tableless", "~> 1.0.0"
+
+Supported ActiveRecord versions are
+
+  * **3.0.x** series
+  * **3.2.x** series
+  * **4.1.x** series
+  * **4.2.x** series
+
+If you are using ActiveRecord 2.3.x series you can use the gem version <
+2.0 like this
+
+    gem "activerecord-tableless", "~> 1.0.0"
 
 You may be able to make it work with 3.1.x, but you should expect to
 put some time in it.
+
+TODO
+----
+
+  * Support Rails 5.x series
 
 Usage
 -----

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name          = 'activerecord-tableless'
-  gem.version       = "1.3.4"
+  gem.version       = "2.0.0"
   gem.platform      = Gem::Platform::RUBY
   gem.authors       = ["Jarl Friis", "Kenneth Kalmer", "Michal Zima"]
   gem.email         = ["jarl@softace.dk"]
@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
 
   gem.require_paths = ["lib"]
 
-  gem.add_runtime_dependency("activerecord", ">= 3.0.0", "< 5.0.0")
+  gem.add_runtime_dependency("activerecord", ">= 3.0.0", '< 5.0.0')
 
   gem.add_development_dependency('bundler', '> 0', '< 1.13.0')
   gem.add_development_dependency('rake', '~> 0', '> 0')
@@ -32,9 +32,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("rspec-collection_matchers", '~> 1.0')
   gem.add_development_dependency('aruba', '~> 0.5')
 
-  ##Specifying upper limit version for ruby 1.8.7
   gem.add_development_dependency('nokogiri', '~> 1.0')
-  gem.add_development_dependency('capybara', '< 2.1')
+  gem.add_development_dependency('capybara', '~> 0.0')
 
 #  gem.add_development_dependency('launchy', '~> 2.1')
 #  gem.add_development_dependency('debugger')

@@ -13,11 +13,6 @@ appraise "rails32" do
   gem "jquery-rails"
 end
 
-appraise "rails3x" do
-  gem "rails", "~> 3.0"
-  gem "jquery-rails"
-end
-
 appraise "rails40" do
   gem "rails", "~> 4.0.0"
   gem "jquery-rails"
