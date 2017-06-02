@@ -29,6 +29,7 @@ module ActiveRecord
   #  end
   #
   module Tableless
+    require 'active_record'
 
     class NoDatabase < StandardError; end
     class Unsupported < StandardError; end
