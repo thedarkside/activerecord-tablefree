@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name          = 'activerecord-tableless'
-  gem.version       = "2.0.0"
+  gem.version       = "2.0.0-alpha1"
   gem.platform      = Gem::Platform::RUBY
   gem.authors       = ["Jarl Friis", "Kenneth Kalmer", "Michal Zima"]
   gem.email         = ["jarl@softace.dk"]
