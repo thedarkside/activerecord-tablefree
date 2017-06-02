@@ -191,6 +191,9 @@ module ActiveRecord
         def conn.quote_table_name(*args)
           ""
         end
+        def conn.quote_column_name(*args)
+          ""
+        end
         def conn.substitute_at(*args)
           nil
         end
