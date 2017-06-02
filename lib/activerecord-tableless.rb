@@ -1,4 +1,5 @@
 # See #ActiveRecord::Tableless
+require 'activerecord-tableless/version'
 
 module ActiveRecord
 

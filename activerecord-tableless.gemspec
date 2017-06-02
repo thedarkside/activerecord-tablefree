@@ -1,8 +1,10 @@
 # -*- ruby -*-
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+require 'activerecord-tableless/version'
 
 Gem::Specification.new do |gem|
   gem.name          = 'activerecord-tableless'
-  gem.version       = "2.0.0-alpha1"
+  gem.version       = ActiveRecord::Tableless::VERSION
   gem.platform      = Gem::Platform::RUBY
   gem.authors       = ["Jarl Friis", "Kenneth Kalmer", "Michal Zima"]
   gem.email         = ["jarl@softace.dk"]
@@ -34,6 +36,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('nokogiri', '~> 1.0')
   gem.add_development_dependency('capybara', '~> 0.0')
+  gem.add_development_dependency('gem-release', '~> 0.7.4')
 
 #  gem.add_development_dependency('launchy', '~> 2.1')
 #  gem.add_development_dependency('debugger')
