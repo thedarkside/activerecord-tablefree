@@ -133,6 +133,25 @@ Or you can see what other options are there:
 
     bundle exec rake -T
 
+Publishing gem
+--------------
+
+```
+gem bump -v pre
+```
+
+Verify everything is OK.
+
+```
+gem build activerecord-tableless.gemspec
+```
+
+Verify everything is OK.
+
+```
+gem release -t
+```
+
 
 History
 -------
