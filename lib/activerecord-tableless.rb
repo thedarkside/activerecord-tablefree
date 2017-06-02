@@ -89,7 +89,8 @@ module ActiveRecord
 
       if ActiveRecord::VERSION::STRING >= "4.2.0"
         def column(name, sql_type = nil, default = nil, null = true)
-          tableless_options[:columns] << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, Type::Value.new, sql_type.to_s, null)
+          cast_type = "ActiveRecord::Type::#{sql_type.to_s.camelize}".constantize.new
+          tableless_options[:columns] << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, cast_type, sql_type.to_s, null)
         end
       else
         def column(name, sql_type = nil, default = nil, null = true)
