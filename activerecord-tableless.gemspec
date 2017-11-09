@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency("activerecord", ">= 3.0.0", '< 5.0.0')
 
-  gem.add_development_dependency('bundler', '> 0', '< 1.13.0')
+  gem.add_development_dependency('bundler', '~> 1.16.0')
   gem.add_development_dependency('rake', '~> 0', '> 0')
 
   #  gem.add_development_dependency("rails") # This is in the appraisal gemfiles
