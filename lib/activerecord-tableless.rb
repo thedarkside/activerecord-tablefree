@@ -61,9 +61,6 @@ module ActiveRecord
         # setup columns
         include ActiveModel::AttributeAssignment
         include ActiveRecord::ModelSchema
-        # self.column_names.each do |column|
-        #   self.attr_accessor column
-        # end
       end
 
       def tableless?
@@ -86,12 +83,6 @@ module ActiveRecord
           )
         end
       end
-
-      # def attributes
-      #   column_names.each_with_object({}) do |elem, memo|
-      #     memo[ elem.to_s ] = instance_variable_get(:"@#{elem}")
-      #   end
-      # end
 
       # Register a new column.
       def column(name, sql_type = nil, default = nil, null = true)
