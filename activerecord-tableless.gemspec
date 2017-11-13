@@ -37,6 +37,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('nokogiri', '~> 1.0')
   gem.add_development_dependency('capybara', '~> 0.0')
   gem.add_development_dependency('gem-release', '~> 0.7.4')
+  gem.add_development_dependency('wwtd')
 
 #  gem.add_development_dependency('launchy', '~> 2.1')
 #  gem.add_development_dependency('debugger')
