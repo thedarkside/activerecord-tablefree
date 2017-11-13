@@ -226,6 +226,10 @@ module ActiveRecord
           def lct.assert_valid_value(*_args)
             true
           end
+          # Needed for Rails 5.0
+          def lct.serialize(args)
+            args
+          end
           def lct.deserialize(args)
             args
           end
