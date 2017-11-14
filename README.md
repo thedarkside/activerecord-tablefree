@@ -1,9 +1,9 @@
-ActiveRecord Tableless
+ActiveRecord Tablefree
 ======================
 
-[![Build Status](https://travis-ci.org/softace/activerecord-tableless.png)](http://travis-ci.org/softace/activerecord-tableless)
-[![Dependency Status](https://gemnasium.com/softace/activerecord-tableless.png)](https://gemnasium.com/softace/activerecord-tableless)
-[![Code Climate](https://codeclimate.com/github/softace/activerecord-tableless.png)](https://codeclimate.com/github/softace/activerecord-tableless)
+[![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.png)](http://travis-ci.org/boltthreads/activerecord-tablefree)
+[![Dependency Status](https://gemnasium.com/boltthreads/activerecord-tablefree.png)](https://gemnasium.com/boltthreads/activerecord-tablefree)
+[![Code Climate](https://codeclimate.com/github/boltthreads/activerecord-tablefree.png)](https://codeclimate.com/github/boltthreads/activerecord-tablefree)
 
 A single implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
@@ -32,12 +32,12 @@ ActiveModel::Model (Rails 4) supports relations and nested attributes.
 Installation
 ------------
 
-ActiveRecord Tableless is distributed as a gem, which is how it should
+ActiveRecord Tablefree is distributed as a gem, which is how it should
 be used in your app.
 
 Include the gem in your Gemfile:
 
-    gem "activerecord-tableless", "~> 1.0"
+    gem "activerecord-tablefree", "~> 1.0"
 
 
 Supported Versions
@@ -51,7 +51,7 @@ Supported ruby version are
 If you are using Ruby version < 2.2.2 you can use the gem version <
 2.0 like this
 
-    gem "activerecord-tableless", "~> 1.0.0"
+    gem "activerecord-tablefree", "~> 1.0.0"
 
 Supported ActiveRecord versions are
 
@@ -63,7 +63,7 @@ Supported ActiveRecord versions are
 If you are using ActiveRecord 2.3.x series you can use the gem version <
 2.0 like this
 
-    gem "activerecord-tableless", "~> 1.0.0"
+    gem "activerecord-tablefree", "~> 1.0.0"
 
 You may be able to make it work with 3.1.x, but you should expect to
 put some time in it.
@@ -114,7 +114,7 @@ Development
 
 To start develop, please download the source code
 
-    git clone git://github.com/softace/activerecord-tableless.git
+    git clone git://github.com/boltthreads/activerecord-tablefree.git
 
 Install development libraries
 
@@ -143,7 +143,7 @@ gem bump -v pre
 Verify everything is OK.
 
 ```
-gem build activerecord-tableless.gemspec
+gem build activerecord-tablefree.gemspec
 ```
 
 Verify everything is OK.

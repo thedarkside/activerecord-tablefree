@@ -1,9 +1,9 @@
-# See #ActiveRecord::Tableless
-require 'activerecord-tableless/version'
+# See #ActiveRecord::Tablefree
+require 'activerecord-tablefree/version'
 
 module ActiveRecord
 
-  # = ActiveRecord::Tableless
+  # = ActiveRecord::Tablefree
   #
   # Allow classes to behave like ActiveRecord models, but without an associated
   # database table. A great way to capitalize on validations. Based on the
@@ -28,7 +28,7 @@ module ActiveRecord
   #    redirect_to :action => :sent
   #  end
   #
-  module Tableless
+  module Tablefree
     require 'active_record'
 
     class NoDatabase < StandardError; end
@@ -40,30 +40,30 @@ module ActiveRecord
 
     module ActsMethods #:nodoc:
 
-      # A model that needs to be tableless will call this method to indicate
+      # A model that needs to be tablefree will call this method to indicate
       # it.
       def has_no_table(options = {:database => :fail_fast})
         raise ArgumentError.new("Invalid database option '#{options[:database]}'") unless [:fail_fast, :pretend_success].member? options[:database]
         # keep our options handy
-        class_attribute :tableless_options
-        self.tableless_options = {
+        class_attribute :tablefree_options
+        self.tablefree_options = {
           :database => options[:database],
           :columns_hash => {}
         }
 
         # extend
-        extend  ActiveRecord::Tableless::SingletonMethods
-        extend  ActiveRecord::Tableless::ClassMethods
+        extend  ActiveRecord::Tablefree::SingletonMethods
+        extend  ActiveRecord::Tablefree::ClassMethods
 
         # include
-        include ActiveRecord::Tableless::InstanceMethods
+        include ActiveRecord::Tablefree::InstanceMethods
 
         # setup columns
         include ActiveModel::AttributeAssignment
         include ActiveRecord::ModelSchema
       end
 
-      def tableless?
+      def tablefree?
         false
       end
 
@@ -73,7 +73,7 @@ module ActiveRecord
 
       # Used internally by ActiveRecord 5.  This is the special hook that makes everything else work.
       def load_schema!
-        @columns_hash = tableless_options[:columns_hash].except(*ignored_columns)
+        @columns_hash = tablefree_options[:columns_hash].except(*ignored_columns)
         @columns_hash.each do |name, column|
           define_attribute(
               name,
@@ -87,7 +87,7 @@ module ActiveRecord
       # Register a new column.
       def column(name, sql_type = nil, default = nil, null = true)
         cast_type = "ActiveRecord::Type::#{sql_type.to_s.camelize}".constantize.new
-        tableless_options[:columns_hash][name.to_s] = ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, cast_type, sql_type.to_s, null)
+        tablefree_options[:columns_hash][name.to_s] = ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, cast_type, sql_type.to_s, null)
       end
 
       # Register a set of columns with the same SQL type
@@ -98,31 +98,31 @@ module ActiveRecord
       end
 
       def destroy(*args)
-        case tableless_options[:database]
+        case tablefree_options[:database]
         when :pretend_success
           self.new()
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy on Tableless class")
+          raise NoDatabase.new("Can't #destroy on Tablefree class")
         end
       end
 
       def destroy_all(*_args)
-        case tableless_options[:database]
+        case tablefree_options[:database]
         when :pretend_success
           []
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy_all on Tableless class")
+          raise NoDatabase.new("Can't #destroy_all on Tablefree class")
         end
       end
 
       case ActiveRecord::VERSION::MAJOR
       when 5
         def find_by_sql(*args)
-          case tableless_options[:database]
+          case tablefree_options[:database]
           when :pretend_success
             []
           when :fail_fast
-            raise NoDatabase.new("Can't #find_by_sql on Tableless class")
+            raise NoDatabase.new("Can't #find_by_sql on Tablefree class")
           end
 
         end
@@ -131,16 +131,16 @@ module ActiveRecord
       end
 
       def transaction(&block)
-#        case tableless_options[:database]
+#        case tablefree_options[:database]
 #        when :pretend_success
           @_current_transaction_records ||= []
           yield
 #        when :fail_fast
-#          raise NoDatabase.new("Can't #transaction on Tableless class")
+#          raise NoDatabase.new("Can't #transaction on Tablefree class")
 #        end
       end
 
-      def tableless?
+      def tablefree?
         true
       end
 
@@ -185,7 +185,7 @@ module ActiveRecord
           end
           schema_cache
         end
-        # Fixes Issue #17. https://github.com/softace/activerecord-tableless/issues/17
+        # Fixes Issue #17. https://github.com/softace/activerecord-tablefree/issues/17
         # The following method is from the ActiveRecord gem: /lib/active_record/connection_adapters/abstract/database_statements.rb .
         # Sanitizes the given LIMIT parameter in order to prevent SQL injection.
         #
@@ -262,31 +262,31 @@ module ActiveRecord
 
       %w(create create_record _create_record update update_record _update_record).each do |method_name|
         define_method(method_name) do |*args|
-          case self.class.tableless_options[:database]
+          case self.class.tablefree_options[:database]
           when :pretend_success
             true
           when :fail_fast
-            raise NoDatabase.new("Can't ##{method_name} a Tableless object")
+            raise NoDatabase.new("Can't ##{method_name} a Tablefree object")
           end
         end
       end
 
       def destroy
-        case self.class.tableless_options[:database]
+        case self.class.tablefree_options[:database]
         when :pretend_success
           @destroyed = true
           freeze
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy a Tableless object")
+          raise NoDatabase.new("Can't #destroy a Tablefree object")
         end
       end
 
       def reload(*args)
-        case self.class.tableless_options[:database]
+        case self.class.tablefree_options[:database]
         when :pretend_success
           self
         when :fail_fast
-          raise NoDatabase.new("Can't #reload a Tableless object")
+          raise NoDatabase.new("Can't #reload a Tablefree object")
         end
       end
 
@@ -315,4 +315,4 @@ module ActiveRecord
   end
 end
 
-ActiveRecord::Base.send( :include, ActiveRecord::Tableless )
+ActiveRecord::Base.send( :include, ActiveRecord::Tablefree )

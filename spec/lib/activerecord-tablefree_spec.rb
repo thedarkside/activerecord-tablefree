@@ -1,10 +1,10 @@
 require 'sqlite3'
 require 'active_record'
-require 'activerecord-tableless'
+require 'activerecord-tablefree'
 require 'logger'
 require 'spec_helper'
 
-def make_tableless_model(database = nil, nested = nil)
+def make_tablefree_model(database = nil, nested = nil)
   eval <<EOCLASS
   class Chair < ActiveRecord::Base
     #{database ? "has_no_table :database => :#{database}" : 'has_no_table'}
@@ -91,83 +91,83 @@ shared_examples_for "a nested active record" do
   end
 end
 
-shared_examples_for "a tableless model with fail_fast" do
+shared_examples_for "a tablefree model with fail_fast" do
   case ActiveRecord::VERSION::MAJOR
   when 3
     describe "#all" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { subject.all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+      it "raises ActiveRecord::Tablefree::NoDatabase" do
+        expect { subject.all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
       end
     end
   when 4
     describe "#all" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
+      it "raises ActiveRecord::Tablefree::NoDatabase" do
         expect { subject.all }.to_not raise_exception
       end
     end
     describe "#all[]" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
-        expect { subject.all[0] }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+      it "raises ActiveRecord::Tablefree::NoDatabase" do
+        expect { subject.all[0] }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
       end
     end
   end
   describe "#create" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.create(:name => 'Jarl') }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.create(:name => 'Jarl') }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
   describe "#destroy" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.destroy(1) }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.destroy(1) }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
   describe "#destroy_all" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.destroy_all }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.destroy_all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
 end
 
-shared_examples_for "a tableless model instance with fail_fast" do
+shared_examples_for "a tablefree model instance with fail_fast" do
   it_behaves_like "an active record instance"
   describe "#save" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.save }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.save }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
   describe "#save!" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.save! }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.save! }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
   describe "#reload" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
-      expect { subject.reload }.to raise_exception(ActiveRecord::Tableless::NoDatabase)
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
+      expect { subject.reload }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
   describe "#update_attributes" do
-    it "raises ActiveRecord::Tableless::NoDatabase" do
+    it "raises ActiveRecord::Tablefree::NoDatabase" do
       expect { subject.update_attributes(:name => 'Jarl') }.to raise_exception(StandardError)
     end
   end
 end
 
-describe "Tableless model with fail_fast" do
-  before(:context) {make_tableless_model(nil, nil)}
+describe "Tablefree model with fail_fast" do
+  before(:context) {make_tablefree_model(nil, nil)}
   after(:context){ remove_models }
   subject { Chair }
-  it_behaves_like "a tableless model with fail_fast"
+  it_behaves_like "a tablefree model with fail_fast"
   describe "instance" do
     subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "a tableless model instance with fail_fast"
+    it_behaves_like "a tablefree model instance with fail_fast"
   end
 end
 
-describe "Tableless nested with fail_fast" do
-  before(:context) {make_tableless_model(nil, true)}
+describe "Tablefree nested with fail_fast" do
+  before(:context) {make_tablefree_model(nil, true)}
   after(:context){ remove_models }
   subject { Chair }
-  it_behaves_like "a tableless model with fail_fast"
+  it_behaves_like "a tablefree model with fail_fast"
   describe "#new" do
     it "accepts attributes" do
       expect(subject.new(:name => "Jarl")).to be_an_instance_of(subject)
@@ -178,10 +178,10 @@ describe "Tableless nested with fail_fast" do
   end
   describe "instance" do
     subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "a tableless model instance with fail_fast"
+    it_behaves_like "a tablefree model instance with fail_fast"
     it_behaves_like "a nested active record"
     describe "#update_attributes" do
-      it "raises ActiveRecord::Tableless::NoDatabase" do
+      it "raises ActiveRecord::Tablefree::NoDatabase" do
         expect do
           subject.update_attributes(:arm_rests => {:name => 'nice arm_rest'})
         end.to raise_exception(StandardError)
@@ -272,8 +272,8 @@ describe "ActiveRecord with real database" do
   end
 end
 
-describe "Tableless model with succeeding database" do
-  before(:context) { make_tableless_model(:pretend_success, nil) }
+describe "Tablefree model with succeeding database" do
+  before(:context) { make_tablefree_model(:pretend_success, nil) }
   after(:context){ remove_models }
   subject { Chair }
   it_behaves_like "a model with succeeding database"

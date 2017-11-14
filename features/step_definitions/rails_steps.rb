@@ -12,7 +12,7 @@ Given /^I generate a new rails application$/ do
       gem "capybara"
       gem "gherkin"
       """
-    And I configure the application to use "activerecord-tableless" from this project
+    And I configure the application to use "activerecord-tablefree" from this project
     And I reset Bundler environment variable
     And I successfully run `bundle install --local`
   }

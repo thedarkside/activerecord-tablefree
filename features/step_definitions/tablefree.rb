@@ -4,12 +4,12 @@ Given /^I delete all migrations$/ do
   }
 end
 
-Given /^I update my new user model to be tableless$/ do
+Given /^I update my new user model to be tablefree$/ do
   in_current_dir do
     file_name = 'app/models/user.rb'
     content = File.read(file_name)
     if framework_version < "3.0"
-      content = "require 'activerecord-tableless'\n" + content
+      content = "require 'activerecord-tablefree'\n" + content
     end
 
     content.gsub!(/^(class .* < ActiveRecord::Base)$/, "\\1\n" + <<-TABLELESS)

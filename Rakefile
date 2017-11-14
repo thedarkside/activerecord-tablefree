@@ -7,7 +7,7 @@ require 'cucumber/rake/task'
 desc 'Default: clean, all.'
 task :default => [:clean, :all]
 
-desc 'Test the activerecord-tableless on all supported Rails versions.'
+desc 'Test the activerecord-tablefree on all supported Rails versions.'
 task :all do |t|
   # TODO: cucumber feature specs appear to be written for Rails 2, and will need an overhaul for Rails 5.
   if ENV['BUNDLE_GEMFILE']
@@ -20,7 +20,7 @@ task :all do |t|
   end
 end
 
-desc 'Test the activerecord-tableless plugin.'
+desc 'Test the activerecord-tablefree plugin.'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib' << 'profile'
   t.pattern = 'test/**/*_test.rb'
@@ -44,5 +44,5 @@ task :clean do |t|
   FileUtils.rm_rf "tmp"
   FileUtils.rm_rf "pkg"
   FileUtils.rm_rf "public"
-  Dir.glob("activerecord-tableless-*.gem").each{|f| FileUtils.rm f }
+  Dir.glob("activerecord-tablefree-*.gem").each{|f| FileUtils.rm f }
 end
