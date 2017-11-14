@@ -1,11 +1,21 @@
 ActiveRecord Tablefree
 ======================
 
-[![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.png)](http://travis-ci.org/boltthreads/activerecord-tablefree)
-[![Dependency Status](https://gemnasium.com/boltthreads/activerecord-tablefree.png)](https://gemnasium.com/boltthreads/activerecord-tablefree)
-[![Code Climate](https://codeclimate.com/github/boltthreads/activerecord-tablefree.png)](https://codeclimate.com/github/boltthreads/activerecord-tablefree)
+| Project                 |  Dynamoid         |
+|------------------------ | ----------------- |
+| gem name                |  dynamoid         |
+| license                 |  MIT              |
+| download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/activerecord-tablefree.png)](https://rubygems.org/gems/activerecord-tablefree) |
+| version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
+| dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/boltthreads/activerecord-tablefree.svg)](https://gemnasium.com/github.com/boltthreads/activerecord-tablefree) |
+| code quality            |  [![Code Climate](https://codeclimate.com/github/boltthreads/activerecord-tablefree.png)](https://codeclimate.com/github/boltthreads/activerecord-tablefree) |
+| continuous integration  |  [![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.png)](http://travis-ci.org/boltthreads/activerecord-tablefree) |
+| test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/boltthreads/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/boltthreads/activerecord-tablefree?branch=master) |
+| triage helpers          |  [![Coverage Status](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
+| homepage                |  [https://github.com/boltthreads/activerecord-tablefree](https://github.com/boltthreads/activerecord-tablefree) |
+| documentation           |  [http://rdoc.info/github/boltthreads/activerecord-tablefree/frames](http://rdoc.info/github/boltthreads/activerecord-tablefree/frames) |
 
-A single implementation of the ActiveRecord Tableless pattern for any
+A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
 
 Why, why, why
@@ -13,20 +23,7 @@ Why, why, why
 
 Why would you ever consider this gem as opposed to ActiveModel.
 
-It all started in Rails 2 (see History section). In rails 2 ActiveModel did not exists. Nowadays rails 2.x series is no longer supported.
-
-In Rails 3 there is an Active Model API, where you can use some
-features of Active Record in other classes. Yehuda Katz has written
-[a nice introduction about this](http://yehudakatz.com/2010/01/10/activemodel-make-any-ruby-object-feel-like-activerecord/).
-
-In Rails 4 basic features of the Active Model API can be activated
-by including
-[ActiveModel:Model](http://api.rubyonrails.org/classes/ActiveModel/Model.html)
-in the model. Carlos Antônio has written
-[a nice tutorial about this](http://blog.plataformatec.com.br/2012/03/barebone-models-to-use-with-actionpack-in-rails-4-0/).
-
-However neither the Active Model API (Rails 3) nor the
-ActiveModel::Model (Rails 4) supports relations and nested attributes.
+ActiveModel::Model does not support relations and nested attributes.
 
 
 Installation
