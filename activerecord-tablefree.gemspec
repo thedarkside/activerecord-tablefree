@@ -40,6 +40,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('wwtd')
   gem.add_development_dependency('rails')
   gem.add_development_dependency('listen')
+  gem.add_development_dependency('coveralls')
 
 #  gem.add_development_dependency('launchy', '~> 2.1')
 #  gem.add_development_dependency('debugger')
