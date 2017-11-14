@@ -109,7 +109,7 @@ If you wish (this is not recommended), you can pretend you have a succeeding dat
 Development
 -----------
 
-To start develop, please download the source code
+To start developing, please download the source code
 
     git clone git://github.com/boltthreads/activerecord-tablefree.git
 
@@ -119,7 +119,6 @@ Install development libraries
 
 When downloaded, you can start issuing the commands like
 
-    gem install bundler -v '~> 1.12.0'
     bundle install
     bundle update
     bundle exec appraisal generate
@@ -159,6 +158,10 @@ dramatically due to the introduction of ActiveModel. But because the
 ActiveModel does not support relations and nested attributes the
 existence of this gem is still justified.
 
+Rails 3 and 4 support is provided in the [activerecord-tableless gem](https://github.com/softace/activerecord-tableless), by [Jarl Friis](https://github.com/jarl-dk).
+
+This gem is a Rails 5 compatible update, and renaming of that gem.
+
 For a history of technical implementation details feel free to take a
 look in the git log :-)
 
@@ -166,5 +169,7 @@ look in the git log :-)
 Copyright
 ---------
 
-Copyright (c) Jarl Friis. See LICENSE.txt for
-further details.
+Copyright (c) Jarl Friis.
+Copyright (c) Peter Boling, Bolt Threads.
+
+The license is MIT.  See LICENSE.txt for further details.
