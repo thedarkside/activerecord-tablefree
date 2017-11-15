@@ -1,10 +1,10 @@
 ActiveRecord Tablefree
 ======================
 
-| Project                 |  Dynamoid         |
-|------------------------ | ----------------- |
-| gem name                |  dynamoid         |
-| license                 |  MIT              |
+| Project                 |  ActiveRecord Tablefree |
+|------------------------ | ----------------------- |
+| gem name                |  activerecord-tablefree |
+| license                 |  MIT                    |
 | download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/activerecord-tablefree.png)](https://rubygems.org/gems/activerecord-tablefree) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
 | dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/boltthreads/activerecord-tablefree.svg)](https://gemnasium.com/github.com/boltthreads/activerecord-tablefree) |
