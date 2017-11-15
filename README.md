@@ -14,6 +14,7 @@ ActiveRecord Tablefree
 | triage helpers          |  [![Coverage Status](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
 | homepage                |  [https://github.com/boltthreads/activerecord-tablefree](https://github.com/boltthreads/activerecord-tablefree) |
 | documentation           |  [http://rdoc.info/github/boltthreads/activerecord-tablefree/frames](http://rdoc.info/github/boltthreads/activerecord-tablefree/frames) |
+| readme hit counter      |  [![ghit.me](https://ghit.me/badge.svg?repo=boltthreads/activerecord-tablefree)](https://ghit.me/repo/boltthreads/activerecord-tablefree) |
 
 A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
