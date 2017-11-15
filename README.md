@@ -9,9 +9,9 @@ ActiveRecord Tablefree
 | version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
 | dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/boltthreads/activerecord-tablefree.svg)](https://gemnasium.com/github.com/boltthreads/activerecord-tablefree) |
 | code quality            |  [![Code Climate](https://codeclimate.com/github/boltthreads/activerecord-tablefree.png)](https://codeclimate.com/github/boltthreads/activerecord-tablefree) |
-| continuous integration  |  [![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.png)](http://travis-ci.org/boltthreads/activerecord-tablefree) |
+| continuous integration  |  [![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.svg?branch=master)](https://travis-ci.org/boltthreads/activerecord-tablefree) |
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/boltthreads/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/boltthreads/activerecord-tablefree?branch=master) |
-| triage helpers          |  [![Coverage Status](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
+| triage helpers          |  [![Issue Triage](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
 | homepage                |  [https://github.com/boltthreads/activerecord-tablefree](https://github.com/boltthreads/activerecord-tablefree) |
 | documentation           |  [http://rdoc.info/github/boltthreads/activerecord-tablefree/frames](http://rdoc.info/github/boltthreads/activerecord-tablefree/frames) |
 | readme hit counter      |  [![ghit.me](https://ghit.me/badge.svg?repo=boltthreads/activerecord-tablefree)](https://ghit.me/repo/boltthreads/activerecord-tablefree) |
