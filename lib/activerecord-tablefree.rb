@@ -1,6 +1,6 @@
-# See #ActiveRecord::Tablefree
-require 'activerecord-tablefree/version'
+require 'cgi'
 
+require 'activerecord-tablefree/version'
 require 'activerecord-tablefree/cast_type'
 require 'activerecord-tablefree/schema_cache'
 require 'activerecord-tablefree/connection'
@@ -214,7 +214,7 @@ module ActiveRecord
       private
 
       def escaped_var_name(name, prefix = nil)
-        prefix ? "#{URI.escape(prefix)}[#{URI.escape(name)}]" : URI.escape(name)
+        prefix ? "#{CGI.escape(prefix)}[#{CGI.escape(name)}]" : CGI.escape(name)
       end
 
       def escape_for_url(value)
@@ -222,7 +222,7 @@ module ActiveRecord
         when true then '1'
         when false then '0'
         when nil then ''
-        else URI.escape(value.to_s)
+        else CGI.escape(value.to_s)
         end
       rescue
         ''
