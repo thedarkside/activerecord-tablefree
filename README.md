@@ -14,7 +14,6 @@ ActiveRecord Tablefree
 | triage helpers          |  [![Issue Triage](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
 | homepage                |  [https://github.com/boltthreads/activerecord-tablefree](https://github.com/boltthreads/activerecord-tablefree) |
 | documentation           |  [http://rdoc.info/github/boltthreads/activerecord-tablefree/frames](http://rdoc.info/github/boltthreads/activerecord-tablefree/frames) |
-| readme hit counter      |  [![ghit.me](https://ghit.me/badge.svg?repo=boltthreads/activerecord-tablefree)](https://ghit.me/repo/boltthreads/activerecord-tablefree) |
 
 A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
@@ -35,7 +34,7 @@ be used in your app.
 
 Include the gem in your Gemfile:
 
-    gem "activerecord-tablefree", "~> 1.0"
+    gem "activerecord-tablefree", "~> 3.0"
 
 
 Supported Versions
@@ -43,33 +42,17 @@ Supported Versions
 
 Supported ruby version are
 
-  * **2.2.x** series higher than 2.2.2
+  * **2.2.x** series higher than 2.2.2 (a Rails 5 requirement)
   * **2.3.x** series
-
-If you are using Ruby version < 2.2.2 you can use the gem version <
-2.0 like this
-
-    gem "activerecord-tablefree", "~> 1.0.0"
 
 Supported ActiveRecord versions are
 
-  * **3.0.x** series
-  * **3.2.x** series
-  * **4.1.x** series
-  * **4.2.x** series
+  * **5.0.x** series
+  * **5.1.x** series
 
-If you are using ActiveRecord 2.3.x series you can use the gem version <
-2.0 like this
+If you are using an older ActiveRecord version you can use the gem [`activerecord-tableless`](https://github.com/softace/activerecord-tableless)
 
-    gem "activerecord-tablefree", "~> 1.0.0"
-
-You may be able to make it work with 3.1.x, but you should expect to
-put some time in it.
-
-TODO
-----
-
-  * Support Rails 5.x series
+This gem tries to maintain the same API as the older `activerecord-tableless` gem.
 
 Usage
 -----
