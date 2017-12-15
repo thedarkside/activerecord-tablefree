@@ -43,6 +43,14 @@ module ActiveRecord::TableFree
       @_cast_type ||= ActiveRecord::TableFree::CastType.new
     end
 
+    def current_transaction
+      @_current_transaction ||= ActiveRecord::ConnectionAdapters::Transaction.new
+    end
+
+    def execute(*args)
+      {}
+    end
+
     # This is used in the StatementCache object. It returns an object that
     # can be used to query the database repeatedly.
     def cacheable_query(arel) # :nodoc:
