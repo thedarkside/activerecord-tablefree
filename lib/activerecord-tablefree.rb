@@ -1,6 +1,10 @@
 # See #ActiveRecord::Tablefree
 require 'activerecord-tablefree/version'
 
+require 'activerecord-tablefree/cast_type'
+require 'activerecord-tablefree/schema_cache'
+require 'activerecord-tablefree/connection'
+
 module ActiveRecord
 
   # = ActiveRecord::Tablefree
@@ -168,86 +172,8 @@ module ActiveRecord
       end
 
       def connection
-        conn = Object.new()
-        def conn.quote_table_name(*_args)
-          ""
-        end
-        def conn.quote_column_name(*_args)
-          ""
-        end
-        def conn.substitute_at(*_args)
-          nil
-        end
-        def conn.schema_cache(*_args)
-          schema_cache = Object.new()
-          def schema_cache.columns_hash(*_args)
-            Hash.new()
-          end
-          schema_cache
-        end
-        # Fixes Issue #17. https://github.com/softace/activerecord-tablefree/issues/17
-        # The following method is from the ActiveRecord gem: /lib/active_record/connection_adapters/abstract/database_statements.rb .
-        # Sanitizes the given LIMIT parameter in order to prevent SQL injection.
-        #
-        # The +limit+ may be anything that can evaluate to a string via #to_s. It
-        # should look like an integer, or a comma-delimited list of integers, or
-        # an Arel SQL literal.
-        #
-        # Returns Integer and Arel::Nodes::SqlLiteral limits as is.
-        # Returns the sanitized limit parameter, either as an integer, or as a
-        # string which contains a comma-delimited list of integers.
-        def conn.sanitize_limit(limit)
-          if limit.is_a?(Integer) || limit.is_a?(Arel::Nodes::SqlLiteral)
-            limit
-          elsif limit.to_s.include?(',')
-            Arel.sql limit.to_s.split(',').map{ |i| Integer(i) }.join(',')
-          else
-            Integer(limit)
-          end
-        end
-
-        # Called by bound_attributes in /lib/active_record/relation/query_methods.rb
-        # Returns a SQL string with the from, join, where, and having clauses, in addition to the limit and offset.
-        def conn.combine_bind_parameters(**_args)
-          ""
-        end
-
-        def conn.lookup_cast_type_from_column(*_args)
-          lct = Object.new
-          def lct.assert_valid_value(*_args)
-            true
-          end
-          # Needed for Rails 5.0
-          def lct.serialize(args)
-            args
-          end
-          def lct.deserialize(args)
-            args
-          end
-          def lct.cast(args)
-            args
-          end
-          def lct.changed?(*_args)
-            false
-          end
-          def lct.changed_in_place?(*_args)
-            false
-          end
-          lct
-        end
-
-        # This is used in the StatementCache object. It returns an object that
-        # can be used to query the database repeatedly.
-        def conn.cacheable_query(arel) # :nodoc:
-          if prepared_statements
-            ActiveRecord::StatementCache.query visitor, arel.ast
-          else
-            ActiveRecord::StatementCache.partial_query visitor, arel.ast, collector
-          end
-        end
-        conn
+        @_connection ||= ActiveRecord::TableFree::Connection.new
       end
-
     end
 
     module InstanceMethods
