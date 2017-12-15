@@ -6,7 +6,6 @@ require 'activerecord-tablefree/schema_cache'
 require 'activerecord-tablefree/connection'
 
 module ActiveRecord
-
   # = ActiveRecord::Tablefree
   #
   # Allow classes to behave like ActiveRecord models, but without an associated
@@ -38,21 +37,20 @@ module ActiveRecord
     class NoDatabase < StandardError; end
     class Unsupported < StandardError; end
 
-    def self.included( base ) #:nodoc:
+    def self.included(base) #:nodoc:
       base.send :extend, ActsMethods
     end
 
     module ActsMethods #:nodoc:
-
       # A model that needs to be tablefree will call this method to indicate
       # it.
-      def has_no_table(options = {:database => :fail_fast})
-        raise ArgumentError.new("Invalid database option '#{options[:database]}'") unless [:fail_fast, :pretend_success].member? options[:database]
+      def has_no_table(options = { database: :fail_fast })
+        raise ArgumentError, "Invalid database option '#{options[:database]}'" unless %i[fail_fast pretend_success].member? options[:database]
         # keep our options handy
         class_attribute :tablefree_options
         self.tablefree_options = {
-          :database => options[:database],
-          :columns_hash => {}
+          database: options[:database],
+          columns_hash: {}
         }
 
         # extend
@@ -70,20 +68,18 @@ module ActiveRecord
       def tablefree?
         false
       end
-
     end
 
     module SingletonMethods
-
       # Used internally by ActiveRecord 5.  This is the special hook that makes everything else work.
       def load_schema!
         @columns_hash = tablefree_options[:columns_hash].except(*ignored_columns)
         @columns_hash.each do |name, column|
           define_attribute(
-              name,
-              connection.lookup_cast_type_from_column(column),
-              default: column.default,
-              user_provided_default: false
+            name,
+            connection.lookup_cast_type_from_column(column),
+            default: column.default,
+            user_provided_default: false
           )
         end
       end
@@ -101,12 +97,12 @@ module ActiveRecord
         end
       end
 
-      def destroy(*args)
+      def destroy(*_args)
         case tablefree_options[:database]
         when :pretend_success
-          self.new()
+          new
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy on Tablefree class")
+          raise NoDatabase, "Can't #destroy on Tablefree class"
         end
       end
 
@@ -115,33 +111,32 @@ module ActiveRecord
         when :pretend_success
           []
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy_all on Tablefree class")
+          raise NoDatabase, "Can't #destroy_all on Tablefree class"
         end
       end
 
       case ActiveRecord::VERSION::MAJOR
       when 5
-        def find_by_sql(*args)
+        def find_by_sql(*_args)
           case tablefree_options[:database]
           when :pretend_success
             []
           when :fail_fast
-            raise NoDatabase.new("Can't #find_by_sql on Tablefree class")
+            raise NoDatabase, "Can't #find_by_sql on Tablefree class"
           end
-
         end
       else
-        raise Unsupported.new("Unsupported ActiveRecord version")
+        raise Unsupported, 'Unsupported ActiveRecord version'
       end
 
-      def transaction(&block)
-#        case tablefree_options[:database]
-#        when :pretend_success
-          @_current_transaction_records ||= []
-          yield
-#        when :fail_fast
-#          raise NoDatabase.new("Can't #transaction on Tablefree class")
-#        end
+      def transaction
+        #        case tablefree_options[:database]
+        #        when :pretend_success
+        @_current_transaction_records ||= []
+        yield
+        #        when :fail_fast
+        #          raise NoDatabase.new("Can't #transaction on Tablefree class")
+        #        end
       end
 
       def tablefree?
@@ -154,20 +149,19 @@ module ActiveRecord
     end
 
     module ClassMethods
-
       def from_query_string(query_string)
-        unless query_string.blank?
+        if query_string.blank?
+          new
+        else
           params = query_string.split('&').collect do |chunk|
             next if chunk.empty?
             key, value = chunk.split('=', 2)
             next if key.empty?
             value = value.nil? ? nil : CGI.unescape(value)
-            [ CGI.unescape(key), value ]
+            [CGI.unescape(key), value]
           end.compact.to_h
 
           new(params)
-        else
-          new
         end
       end
 
@@ -177,22 +171,21 @@ module ActiveRecord
     end
 
     module InstanceMethods
-
       def to_query_string(prefix = nil)
-        attributes.to_a.collect{|(name,value)| escaped_var_name(name, prefix) + "=" + escape_for_url(value) if value }.compact.join("&")
+        attributes.to_a.collect { |(name, value)| escaped_var_name(name, prefix) + '=' + escape_for_url(value) if value }.compact.join('&')
       end
 
       def quote_value(_value, _column = nil)
-        ""
+        ''
       end
 
-      %w(create create_record _create_record update update_record _update_record).each do |method_name|
-        define_method(method_name) do |*args|
+      %w[create create_record _create_record update update_record _update_record].each do |method_name|
+        define_method(method_name) do |*_args|
           case self.class.tablefree_options[:database]
           when :pretend_success
             true
           when :fail_fast
-            raise NoDatabase.new("Can't ##{method_name} a Tablefree object")
+            raise NoDatabase, "Can't ##{method_name} a Tablefree object"
           end
         end
       end
@@ -203,42 +196,39 @@ module ActiveRecord
           @destroyed = true
           freeze
         when :fail_fast
-          raise NoDatabase.new("Can't #destroy a Tablefree object")
+          raise NoDatabase, "Can't #destroy a Tablefree object"
         end
       end
 
-      def reload(*args)
+      def reload(*_args)
         case self.class.tablefree_options[:database]
         when :pretend_success
           self
         when :fail_fast
-          raise NoDatabase.new("Can't #reload a Tablefree object")
+          raise NoDatabase, "Can't #reload a Tablefree object"
         end
       end
 
-      def add_to_transaction
-      end
+      def add_to_transaction; end
 
       private
 
-        def escaped_var_name(name, prefix = nil)
-          prefix ? "#{URI.escape(prefix)}[#{URI.escape(name)}]" : URI.escape(name)
-        end
+      def escaped_var_name(name, prefix = nil)
+        prefix ? "#{URI.escape(prefix)}[#{URI.escape(name)}]" : URI.escape(name)
+      end
 
-        def escape_for_url(value)
-          case value
-            when true then "1"
-            when false then "0"
-            when nil then ""
-            else URI.escape(value.to_s)
-          end
-        rescue
-          ""
+      def escape_for_url(value)
+        case value
+        when true then '1'
+        when false then '0'
+        when nil then ''
+        else URI.escape(value.to_s)
         end
-
+      rescue
+        ''
+      end
     end
-
   end
 end
 
-ActiveRecord::Base.send( :include, ActiveRecord::Tablefree )
+ActiveRecord::Base.send(:include, ActiveRecord::Tablefree)

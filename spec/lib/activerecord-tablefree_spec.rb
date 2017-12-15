@@ -11,15 +11,15 @@ def make_tablefree_model(database = nil, nested = nil)
     column :id, :integer
     column :name, :string
     #{if nested
-      '
-      has_many :arm_rests
-      accepts_nested_attributes_for :arm_rests
-      '
+        '
+        has_many :arm_rests
+        accepts_nested_attributes_for :arm_rests
+        '
       end}
   end
 EOCLASS
   if nested
-  eval <<EOCLASS
+    eval <<EOCLASS
     class ArmRest < ActiveRecord::Base
       #{database ? "has_no_table :database => :#{database}" : 'has_no_table'}
       belongs_to :chair
@@ -32,229 +32,238 @@ EOCLASS
 end
 
 def remove_models
-  Object.send(:remove_const, :Chair) rescue nil
-  Object.send(:remove_const, :ArmRest) rescue nil
+  begin
+    Object.send(:remove_const, :Chair)
+  rescue
+    nil
+  end
+  begin
+    Object.send(:remove_const, :ArmRest)
+  rescue
+    nil
+  end
 end
 
 ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::Severity::UNKNOWN
 
-shared_examples_for "an active record instance" do
+shared_examples_for 'an active record instance' do
   it { should respond_to :id }
   it { should respond_to :id= }
   it { should respond_to :name }
   it { should respond_to :name= }
   it { should respond_to :update_attributes }
-  describe "#attributes=" do
-    before(:example){ subject.attributes=({:name => 'Jarl Friis'}) }
-    it "assign attributes" do
+  describe '#attributes=' do
+    before(:example) { subject.attributes = ({ name: 'Jarl Friis' }) }
+    it 'assign attributes' do
       expect(subject.name).to eq 'Jarl Friis'
     end
   end
 end
 
-shared_examples_for "a nested active record" do
-  describe "conllection#build" do
+shared_examples_for 'a nested active record' do
+  describe 'conllection#build' do
     specify do
-      expect(subject.arm_rests.build({:name => 'nice arm_rest'})).to be_an_instance_of(ArmRest)
+      expect(subject.arm_rests.build(name: 'nice arm_rest')).to be_an_instance_of(ArmRest)
     end
   end
-  describe "conllection#<<" do
+  describe 'conllection#<<' do
     specify do
-      expect(subject.arm_rests << ArmRest.new({:name => 'nice arm_rest'})).to have(1).items
+      expect(subject.arm_rests << ArmRest.new(name: 'nice arm_rest')).to have(1).items
     end
     describe 'appending two children' do
       before(:example) do
-        subject.arm_rests << [ArmRest.new({:name => 'left'}),
-                              ArmRest.new({:name => 'right'})]
+        subject.arm_rests << [ArmRest.new(name: 'left'),
+                              ArmRest.new(name: 'right')]
       end
-      it "assigns nested attributes" do
+      it 'assigns nested attributes' do
         expect(subject.arm_rests[0].name).to eq 'left'
         expect(subject.arm_rests[1].name).to eq 'right'
       end
     end
   end
-  describe "#attributes=" do
-    before(:example){ subject.attributes=({ :name => 'Jarl Friis',
-                                            :arm_rests_attributes => [
-                                                                      {:name => 'left'},
-                                                                      {:name => 'right'}
-                                                                     ]
-                                          }) }
-    it "assigns attributes" do
+  describe '#attributes=' do
+    before(:example) do
+      subject.attributes = ({ name: 'Jarl Friis',
+                              arm_rests_attributes: [
+                                { name: 'left' },
+                                { name: 'right' }
+                              ] })
+    end
+    it 'assigns attributes' do
       expect(subject.name).to eq 'Jarl Friis'
     end
-    it "assigns nested attributes" do
+    it 'assigns nested attributes' do
       expect(subject.arm_rests[0].name).to eq 'left'
       expect(subject.arm_rests[1].name).to eq 'right'
     end
   end
 end
 
-shared_examples_for "a tablefree model with fail_fast" do
+shared_examples_for 'a tablefree model with fail_fast' do
   case ActiveRecord::VERSION::MAJOR
   when 3
-    describe "#all" do
-      it "raises ActiveRecord::Tablefree::NoDatabase" do
+    describe '#all' do
+      it 'raises ActiveRecord::Tablefree::NoDatabase' do
         expect { subject.all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
       end
     end
   when 4
-    describe "#all" do
-      it "raises ActiveRecord::Tablefree::NoDatabase" do
+    describe '#all' do
+      it 'raises ActiveRecord::Tablefree::NoDatabase' do
         expect { subject.all }.to_not raise_exception
       end
     end
-    describe "#all[]" do
-      it "raises ActiveRecord::Tablefree::NoDatabase" do
+    describe '#all[]' do
+      it 'raises ActiveRecord::Tablefree::NoDatabase' do
         expect { subject.all[0] }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
       end
     end
   end
-  describe "#create" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
-      expect { subject.create(:name => 'Jarl') }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
+  describe '#create' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
+      expect { subject.create(name: 'Jarl') }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
-  describe "#destroy" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
+  describe '#destroy' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
       expect { subject.destroy(1) }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
-  describe "#destroy_all" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
+  describe '#destroy_all' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
       expect { subject.destroy_all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
 end
 
-shared_examples_for "a tablefree model instance with fail_fast" do
-  it_behaves_like "an active record instance"
-  describe "#save" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
+shared_examples_for 'a tablefree model instance with fail_fast' do
+  it_behaves_like 'an active record instance'
+  describe '#save' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
       expect { subject.save }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
-  describe "#save!" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
+  describe '#save!' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
       expect { subject.save! }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
-  describe "#reload" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
+  describe '#reload' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
       expect { subject.reload }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
     end
   end
-  describe "#update_attributes" do
-    it "raises ActiveRecord::Tablefree::NoDatabase" do
-      expect { subject.update_attributes(:name => 'Jarl') }.to raise_exception(StandardError)
+  describe '#update_attributes' do
+    it 'raises ActiveRecord::Tablefree::NoDatabase' do
+      expect { subject.update_attributes(name: 'Jarl') }.to raise_exception(StandardError)
     end
   end
 end
 
-describe "Tablefree model with fail_fast" do
-  before(:context) {make_tablefree_model(nil, nil)}
-  after(:context){ remove_models }
+describe 'Tablefree model with fail_fast' do
+  before(:context) { make_tablefree_model(nil, nil) }
+  after(:context) { remove_models }
   subject { Chair }
-  it_behaves_like "a tablefree model with fail_fast"
-  describe "instance" do
-    subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "a tablefree model instance with fail_fast"
+  it_behaves_like 'a tablefree model with fail_fast'
+  describe 'instance' do
+    subject { Chair.new(name: 'Jarl') }
+    it_behaves_like 'a tablefree model instance with fail_fast'
   end
 end
 
-describe "Tablefree nested with fail_fast" do
-  before(:context) {make_tablefree_model(nil, true)}
-  after(:context){ remove_models }
+describe 'Tablefree nested with fail_fast' do
+  before(:context) { make_tablefree_model(nil, true) }
+  after(:context) { remove_models }
   subject { Chair }
-  it_behaves_like "a tablefree model with fail_fast"
-  describe "#new" do
-    it "accepts attributes" do
-      expect(subject.new(:name => "Jarl")).to be_an_instance_of(subject)
+  it_behaves_like 'a tablefree model with fail_fast'
+  describe '#new' do
+    it 'accepts attributes' do
+      expect(subject.new(name: 'Jarl')).to be_an_instance_of(subject)
     end
-    it "assign attributes" do
-      expect(subject.new(:name => "Jarl").name).to eq "Jarl"
+    it 'assign attributes' do
+      expect(subject.new(name: 'Jarl').name).to eq 'Jarl'
     end
   end
-  describe "instance" do
-    subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "a tablefree model instance with fail_fast"
-    it_behaves_like "a nested active record"
-    describe "#update_attributes" do
-      it "raises ActiveRecord::Tablefree::NoDatabase" do
+  describe 'instance' do
+    subject { Chair.new(name: 'Jarl') }
+    it_behaves_like 'a tablefree model instance with fail_fast'
+    it_behaves_like 'a nested active record'
+    describe '#update_attributes' do
+      it 'raises ActiveRecord::Tablefree::NoDatabase' do
         expect do
-          subject.update_attributes(:arm_rests => {:name => 'nice arm_rest'})
+          subject.update_attributes(arm_rests: { name: 'nice arm_rest' })
         end.to raise_exception(StandardError)
       end
     end
   end
-  describe "instance with nested models" do
+  describe 'instance with nested models' do
     subject do
-      Chair.new(:name => "Jarl",
-                :arm_rests => [
-                               ArmRest.new(:name => 'left'),
-                               ArmRest.new(:name => 'right'),
-                              ])
+      Chair.new(name: 'Jarl',
+                arm_rests: [
+                  ArmRest.new(name: 'left'),
+                  ArmRest.new(name: 'right')
+                ])
     end
-    it {should be_an_instance_of(Chair) }
-    it {should have(2).arm_rests }
+    it { should be_an_instance_of(Chair) }
+    it { should have(2).arm_rests }
   end
-  describe "instance with nested attributes" do
+  describe 'instance with nested attributes' do
     subject do
-      Chair.new(:name => "Jarl",
-                :arm_rests_attributes => [
-                                          {:name => 'left'},
-                                          {:name => 'right'},
-                                         ])
+      Chair.new(name: 'Jarl',
+                arm_rests_attributes: [
+                  { name: 'left' },
+                  { name: 'right' }
+                ])
     end
-    it {should be_an_instance_of(Chair)}
-    it {should have(2).arm_rests }
+    it { should be_an_instance_of(Chair) }
+    it { should have(2).arm_rests }
   end
 end
 
 ##
 ## Succeeding database
 ##
-shared_examples_for "a model with succeeding database" do
-  describe "#all" do
-    specify { expect(subject.all).to eq []}
+shared_examples_for 'a model with succeeding database' do
+  describe '#all' do
+    specify { expect(subject.all).to eq [] }
   end
-  describe "#create" do
-    specify { expect(subject.create(:name => 'Jarl')).to be_an_instance_of(subject) }
+  describe '#create' do
+    specify { expect(subject.create(name: 'Jarl')).to be_an_instance_of(subject) }
   end
-  describe "#destroy" do
+  describe '#destroy' do
     specify { expect(subject.destroy(1)).to be_an_instance_of(subject) }
   end
-  describe "#destroy_all" do
+  describe '#destroy_all' do
     specify { expect(subject.destroy_all).to eq [] }
   end
 end
 
-shared_examples_for "an instance with succeeding database" do
-  it_behaves_like "an active record instance"
+shared_examples_for 'an instance with succeeding database' do
+  it_behaves_like 'an active record instance'
 
-  describe "#save" do
+  describe '#save' do
     specify { expect(subject.save).to eq true }
   end
-  describe "#save!" do
+  describe '#save!' do
     specify { expect(subject.save!).to eq true }
   end
-  describe "#reload" do
+  describe '#reload' do
     before { subject.save! }
     specify { expect(subject.reload).to eq subject }
   end
-  describe "#update_attributes" do
-    specify { expect(subject.update_attributes(:name => 'Jarl Friis')).to eq true }
+  describe '#update_attributes' do
+    specify { expect(subject.update_attributes(name: 'Jarl Friis')).to eq true }
   end
 end
 
-describe "ActiveRecord with real database" do
-  ##This is only here to ensure that the shared examples are actually behaving like a real database.
+describe 'ActiveRecord with real database' do
+  # #This is only here to ensure that the shared examples are actually behaving like a real database.
   before(:context) do
-    FileUtils.mkdir_p "tmp"
-    ActiveRecord::Base.establish_connection(:adapter  => 'sqlite3', :database => 'tmp/test.db')
-    ActiveRecord::Base.connection.execute("drop table if exists chairs")
-    ActiveRecord::Base.connection.execute("create table chairs (id INTEGER PRIMARY KEY, name TEXT )")
+    FileUtils.mkdir_p 'tmp'
+    ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'tmp/test.db')
+    ActiveRecord::Base.connection.execute('drop table if exists chairs')
+    ActiveRecord::Base.connection.execute('create table chairs (id INTEGER PRIMARY KEY, name TEXT )')
 
     class Chair < ActiveRecord::Base
     end
@@ -265,20 +274,20 @@ describe "ActiveRecord with real database" do
   end
 
   subject { Chair }
-  it_behaves_like "a model with succeeding database"
-  describe "instance" do
-    subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "an instance with succeeding database"
+  it_behaves_like 'a model with succeeding database'
+  describe 'instance' do
+    subject { Chair.new(name: 'Jarl') }
+    it_behaves_like 'an instance with succeeding database'
   end
 end
 
-describe "Tablefree model with succeeding database" do
+describe 'Tablefree model with succeeding database' do
   before(:context) { make_tablefree_model(:pretend_success, nil) }
-  after(:context){ remove_models }
+  after(:context) { remove_models }
   subject { Chair }
-  it_behaves_like "a model with succeeding database"
-  describe "instance" do
-    subject { Chair.new(:name => 'Jarl') }
-    it_behaves_like "an instance with succeeding database"
+  it_behaves_like 'a model with succeeding database'
+  describe 'instance' do
+    subject { Chair.new(name: 'Jarl') }
+    it_behaves_like 'an instance with succeeding database'
   end
 end

@@ -42,7 +42,7 @@ module ActiveRecord::TableFree
     # Returns a SQL string with the from, join, where, and having clauses,
     #   in addition to the limit and offset.
     def combine_bind_parameters(**_args)
-      ""
+      ''
     end
 
     def lookup_cast_type_from_column(*_args)
@@ -51,10 +51,10 @@ module ActiveRecord::TableFree
 
     def current_transaction
       @_current_transaction ||=
-          ActiveRecord::ConnectionAdapters::NullTransaction.new
+        ActiveRecord::ConnectionAdapters::NullTransaction.new
     end
 
-    def execute(*args)
+    def execute(*_args)
       {}
     end
 

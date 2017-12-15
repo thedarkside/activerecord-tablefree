@@ -1,7 +1,5 @@
 module ActiveRecord
   module Tablefree
-    unless defined?(ActiveRecord::Tablefree::VERSION)
-      VERSION = "3.0.1".freeze
-    end
+    VERSION = '3.0.1'.freeze unless defined?(ActiveRecord::Tablefree::VERSION)
   end
 end
