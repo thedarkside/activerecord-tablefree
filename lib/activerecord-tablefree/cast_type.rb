@@ -1,4 +1,4 @@
-module ActiveRecord::TableFree
+module ActiveRecord::Tablefree
   class CastType
     def assert_valid_value(*_args)
       true

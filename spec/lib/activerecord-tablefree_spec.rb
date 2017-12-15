@@ -258,7 +258,7 @@ shared_examples_for 'an instance with succeeding database' do
 end
 
 describe 'ActiveRecord with real database' do
-  # #This is only here to ensure that the shared examples are actually behaving like a real database.
+  # This is only here to ensure that the shared examples are actually behaving like a real database.
   before(:context) do
     FileUtils.mkdir_p 'tmp'
     ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'tmp/test.db')
@@ -289,5 +289,23 @@ describe 'Tablefree model with succeeding database' do
   describe 'instance' do
     subject { Chair.new(name: 'Jarl') }
     it_behaves_like 'an instance with succeeding database'
+  end
+end
+
+describe 'Tablefree model can access connection' do
+  before(:context) { make_tablefree_model(:pretend_success, nil) }
+  after(:context) { remove_models }
+  describe '.connection' do
+    subject { Chair.connection }
+    it { is_expected.to be_a(ActiveRecord::Tablefree::Connection) }
+  end
+end
+
+describe 'Tablefree model can access connection transaction' do
+  before(:context) { make_tablefree_model(:pretend_success, nil) }
+  after(:context) { remove_models }
+  describe '.connection' do
+    subject { Chair.connection.current_transaction }
+    it { is_expected.to be_a(ActiveRecord::Tablefree::Transaction) }
   end
 end

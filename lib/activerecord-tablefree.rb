@@ -4,6 +4,7 @@ require 'activerecord-tablefree/version'
 require 'activerecord-tablefree/cast_type'
 require 'activerecord-tablefree/schema_cache'
 require 'activerecord-tablefree/connection'
+require 'activerecord-tablefree/transaction'
 
 module ActiveRecord
   # = ActiveRecord::Tablefree
@@ -166,7 +167,7 @@ module ActiveRecord
       end
 
       def connection
-        @_connection ||= ActiveRecord::TableFree::Connection.new
+        @_connection ||= ActiveRecord::Tablefree::Connection.new
       end
     end
 

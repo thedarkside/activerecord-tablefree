@@ -1,4 +1,4 @@
-module ActiveRecord::TableFree
+module ActiveRecord::Tablefree
   class Connection
     def quote_table_name(*_args)
       ''
@@ -13,7 +13,7 @@ module ActiveRecord::TableFree
     end
 
     def schema_cache(*_args)
-      @_schema_cache ||= ActiveRecord::TableFree::SchemaCache.new
+      @_schema_cache ||= ActiveRecord::Tablefree::SchemaCache.new
     end
 
     # Fixes Issue #17. https://github.com/softace/activerecord-tablefree/issues/17
@@ -46,11 +46,11 @@ module ActiveRecord::TableFree
     end
 
     def lookup_cast_type_from_column(*_args)
-      @_cast_type ||= ActiveRecord::TableFree::CastType.new
+      @_cast_type ||= ActiveRecord::Tablefree::CastType.new
     end
 
     def current_transaction
-      @_current_transaction ||= ActiveRecord::TableFree::Transaction.new
+      @_current_transaction ||= ActiveRecord::Tablefree::Transaction.new
     end
 
     def execute(*_args)
