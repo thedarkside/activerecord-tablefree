@@ -20,7 +20,9 @@ Gem::Specification.new do |gem|
 
   gem.require_paths = ['lib']
 
-  gem.add_runtime_dependency('activerecord', '>= 3.0.0')
+  gem.required_ruby_version = '>= 2.2.2' # Requirement for Rails 5
+
+  gem.add_runtime_dependency('activerecord', '>= 5.0.0')
 
   gem.add_development_dependency('bundler', '~> 1.16.0')
   gem.add_development_dependency('rake', '~> 12', '> 0')
@@ -36,7 +38,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('capybara', '~> 0.0')
   gem.add_development_dependency('coveralls')
-  gem.add_development_dependency('gem-release', '~> 0.7.4')
+  gem.add_development_dependency('gem-release', '~> 1.0.0')
   gem.add_development_dependency('listen')
   gem.add_development_dependency('nokogiri', '~> 1.0')
   gem.add_development_dependency('rails')
