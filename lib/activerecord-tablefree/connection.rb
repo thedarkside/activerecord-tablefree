@@ -44,7 +44,7 @@ module ActiveRecord::TableFree
     end
 
     def current_transaction
-      @_current_transaction ||= ActiveRecord::ConnectionAdapters::Transaction.new
+      @_current_transaction ||= ActiveRecord::ConnectionAdapters::NullTransaction.new
     end
 
     def execute(*args)
