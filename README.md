@@ -44,6 +44,7 @@ Supported ruby version are
 
   * **2.2.x** series higher than 2.2.2 (a Rails 5 requirement)
   * **2.3.x** series
+  * **2.4.x** series
 
 Supported ActiveRecord versions are
 
