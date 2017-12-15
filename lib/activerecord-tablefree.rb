@@ -1,4 +1,5 @@
 require 'cgi'
+require 'active_record'
 
 require 'activerecord-tablefree/version'
 require 'activerecord-tablefree/cast_type'
@@ -33,7 +34,6 @@ module ActiveRecord
   #  end
   #
   module Tablefree
-    require 'active_record'
 
     class NoDatabase < StandardError; end
     class Unsupported < StandardError; end
