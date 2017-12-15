@@ -1,19 +1,24 @@
 module ActiveRecord::TableFree
   class Connection
     def quote_table_name(*_args)
-      ""
+      ''
     end
+
     def quote_column_name(*_args)
-      ""
+      ''
     end
+
     def substitute_at(*_args)
       nil
     end
+
     def schema_cache(*_args)
       @_schema_cache ||= ActiveRecord::TableFree::SchemaCache.new
     end
+
     # Fixes Issue #17. https://github.com/softace/activerecord-tablefree/issues/17
-    # The following method is from the ActiveRecord gem: /lib/active_record/connection_adapters/abstract/database_statements.rb .
+    # The following method is from the ActiveRecord gem:
+    #   /lib/active_record/connection_adapters/abstract/database_statements.rb .
     # Sanitizes the given LIMIT parameter in order to prevent SQL injection.
     #
     # The +limit+ may be anything that can evaluate to a string via #to_s. It
@@ -27,14 +32,15 @@ module ActiveRecord::TableFree
       if limit.is_a?(Integer) || limit.is_a?(Arel::Nodes::SqlLiteral)
         limit
       elsif limit.to_s.include?(',')
-        Arel.sql limit.to_s.split(',').map{ |i| Integer(i) }.join(',')
+        Arel.sql limit.to_s.split(',').map { |i| Integer(i) }.join(',')
       else
         Integer(limit)
       end
     end
 
     # Called by bound_attributes in /lib/active_record/relation/query_methods.rb
-    # Returns a SQL string with the from, join, where, and having clauses, in addition to the limit and offset.
+    # Returns a SQL string with the from, join, where, and having clauses,
+    #   in addition to the limit and offset.
     def combine_bind_parameters(**_args)
       ""
     end
@@ -44,7 +50,8 @@ module ActiveRecord::TableFree
     end
 
     def current_transaction
-      @_current_transaction ||= ActiveRecord::ConnectionAdapters::NullTransaction.new
+      @_current_transaction ||=
+          ActiveRecord::ConnectionAdapters::NullTransaction.new
     end
 
     def execute(*args)
