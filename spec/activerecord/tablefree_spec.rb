@@ -1,7 +1,4 @@
-require 'sqlite3'
-require 'active_record'
-require 'activerecord-tablefree'
-require 'logger'
+
 require 'spec_helper'
 
 def make_tablefree_model(database = nil, nested = nil)
@@ -11,7 +8,7 @@ def make_tablefree_model(database = nil, nested = nil)
     column :id, :integer
     column :name, :string
     #{if nested
-        '
+                                                                                   '
         has_many :arm_rests
         accepts_nested_attributes_for :arm_rests
         '
@@ -86,8 +83,8 @@ shared_examples_for 'a nested active record' do
     before(:example) do
       subject.attributes = ({ name: 'Jarl Friis',
                               arm_rests_attributes: [
-                                { name: 'left' },
-                                { name: 'right' }
+                                  { name: 'left' },
+                                  { name: 'right' }
                               ] })
     end
     it 'assigns attributes' do
@@ -102,23 +99,23 @@ end
 
 shared_examples_for 'a tablefree model with fail_fast' do
   case ActiveRecord::VERSION::MAJOR
-  when 3
-    describe '#all' do
-      it 'raises ActiveRecord::Tablefree::NoDatabase' do
-        expect { subject.all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
+    when 3
+      describe '#all' do
+        it 'raises ActiveRecord::Tablefree::NoDatabase' do
+          expect { subject.all }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
+        end
       end
-    end
-  when 4
-    describe '#all' do
-      it 'raises ActiveRecord::Tablefree::NoDatabase' do
-        expect { subject.all }.to_not raise_exception
+    when 4
+      describe '#all' do
+        it 'raises ActiveRecord::Tablefree::NoDatabase' do
+          expect { subject.all }.to_not raise_exception
+        end
       end
-    end
-    describe '#all[]' do
-      it 'raises ActiveRecord::Tablefree::NoDatabase' do
-        expect { subject.all[0] }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
+      describe '#all[]' do
+        it 'raises ActiveRecord::Tablefree::NoDatabase' do
+          expect { subject.all[0] }.to raise_exception(ActiveRecord::Tablefree::NoDatabase)
+        end
       end
-    end
   end
   describe '#create' do
     it 'raises ActiveRecord::Tablefree::NoDatabase' do
@@ -201,8 +198,8 @@ describe 'Tablefree nested with fail_fast' do
     subject do
       Chair.new(name: 'Jarl',
                 arm_rests: [
-                  ArmRest.new(name: 'left'),
-                  ArmRest.new(name: 'right')
+                    ArmRest.new(name: 'left'),
+                    ArmRest.new(name: 'right')
                 ])
     end
     it { should be_an_instance_of(Chair) }
@@ -212,8 +209,8 @@ describe 'Tablefree nested with fail_fast' do
     subject do
       Chair.new(name: 'Jarl',
                 arm_rests_attributes: [
-                  { name: 'left' },
-                  { name: 'right' }
+                    { name: 'left' },
+                    { name: 'right' }
                 ])
     end
     it { should be_an_instance_of(Chair) }
