@@ -34,7 +34,6 @@ module ActiveRecord
   #  end
   #
   module Tablefree
-
     class NoDatabase < StandardError; end
     class Unsupported < StandardError; end
 
@@ -50,8 +49,8 @@ module ActiveRecord
         # keep our options handy
         class_attribute :tablefree_options
         self.tablefree_options = {
-            database: options[:database],
-            columns_hash: {}
+          database: options[:database],
+          columns_hash: {}
         }
 
         # extend
@@ -77,10 +76,10 @@ module ActiveRecord
         @columns_hash = tablefree_options[:columns_hash].except(*ignored_columns)
         @columns_hash.each do |name, column|
           define_attribute(
-              name,
-              connection.lookup_cast_type_from_column(column),
-              default: column.default,
-              user_provided_default: false
+            name,
+            connection.lookup_cast_type_from_column(column),
+            default: column.default,
+            user_provided_default: false
           )
         end
       end
@@ -100,34 +99,34 @@ module ActiveRecord
 
       def destroy(*_args)
         case tablefree_options[:database]
-          when :pretend_success
-            new
-          when :fail_fast
-            raise NoDatabase, "Can't #destroy on Tablefree class"
+        when :pretend_success
+          new
+        when :fail_fast
+          raise NoDatabase, "Can't #destroy on Tablefree class"
         end
       end
 
       def destroy_all(*_args)
         case tablefree_options[:database]
-          when :pretend_success
-            []
-          when :fail_fast
-            raise NoDatabase, "Can't #destroy_all on Tablefree class"
+        when :pretend_success
+          []
+        when :fail_fast
+          raise NoDatabase, "Can't #destroy_all on Tablefree class"
         end
       end
 
       case ActiveRecord::VERSION::MAJOR
-        when 5
-          def find_by_sql(*_args)
-            case tablefree_options[:database]
-              when :pretend_success
-                []
-              when :fail_fast
-                raise NoDatabase, "Can't #find_by_sql on Tablefree class"
-            end
+      when 5
+        def find_by_sql(*_args)
+          case tablefree_options[:database]
+          when :pretend_success
+            []
+          when :fail_fast
+            raise NoDatabase, "Can't #find_by_sql on Tablefree class"
           end
-        else
-          raise Unsupported, 'Unsupported ActiveRecord version'
+        end
+      else
+        raise Unsupported, 'Unsupported ActiveRecord version'
       end
 
       def transaction
@@ -183,30 +182,30 @@ module ActiveRecord
       %w[create create_record _create_record update update_record _update_record].each do |method_name|
         define_method(method_name) do |*_args|
           case self.class.tablefree_options[:database]
-            when :pretend_success
-              true
-            when :fail_fast
-              raise NoDatabase, "Can't ##{method_name} a Tablefree object"
+          when :pretend_success
+            true
+          when :fail_fast
+            raise NoDatabase, "Can't ##{method_name} a Tablefree object"
           end
         end
       end
 
       def destroy
         case self.class.tablefree_options[:database]
-          when :pretend_success
-            @destroyed = true
-            freeze
-          when :fail_fast
-            raise NoDatabase, "Can't #destroy a Tablefree object"
+        when :pretend_success
+          @destroyed = true
+          freeze
+        when :fail_fast
+          raise NoDatabase, "Can't #destroy a Tablefree object"
         end
       end
 
       def reload(*_args)
         case self.class.tablefree_options[:database]
-          when :pretend_success
-            self
-          when :fail_fast
-            raise NoDatabase, "Can't #reload a Tablefree object"
+        when :pretend_success
+          self
+        when :fail_fast
+          raise NoDatabase, "Can't #reload a Tablefree object"
         end
       end
 
@@ -220,10 +219,10 @@ module ActiveRecord
 
       def escape_for_url(value)
         case value
-          when true then '1'
-          when false then '0'
-          when nil then ''
-          else CGI.escape(value.to_s)
+        when true then '1'
+        when false then '0'
+        when nil then ''
+        else CGI.escape(value.to_s)
         end
       rescue
         ''
