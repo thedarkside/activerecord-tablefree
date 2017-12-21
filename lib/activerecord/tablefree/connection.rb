@@ -1,5 +1,19 @@
 module ActiveRecord::Tablefree
-  class Connection
+  class Connection < ActiveRecord::ConnectionAdapters::AbstractAdapter
+    def initialize
+      @connection          = Object.new # The Raw Connection
+      @owner               = nil
+      @instrumenter        = ActiveSupport::Notifications.instrumenter
+      @logger              = Object.new
+      @config              = Object.new
+      @pool                = nil
+      @schema_cache        = ActiveRecord::Tablefree::SchemaCache.new
+      @quoted_column_names, @quoted_table_names = {}, {}
+      @visitor = Object.new
+      @lock = Object.new
+      @prepared_statements = false
+    end
+
     def quote_table_name(*_args)
       ''
     end
@@ -10,10 +24,6 @@ module ActiveRecord::Tablefree
 
     def substitute_at(*_args)
       nil
-    end
-
-    def schema_cache(*_args)
-      @_schema_cache ||= ActiveRecord::Tablefree::SchemaCache.new
     end
 
     # Fixes Issue #17. https://github.com/softace/activerecord-tablefree/issues/17
@@ -57,14 +67,9 @@ module ActiveRecord::Tablefree
       {}
     end
 
-    # This is used in the StatementCache object. It returns an object that
-    # can be used to query the database repeatedly.
+    # This is used in the StatementCache object.
     def cacheable_query(arel) # :nodoc:
-      if prepared_statements
-        ActiveRecord::StatementCache.query visitor, arel.ast
-      else
-        ActiveRecord::StatementCache.partial_query visitor, arel.ast, collector
-      end
+      ActiveRecord::Tablefree::StatementCache.partial_query visitor, arel.ast, collector
     end
   end
 end

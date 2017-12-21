@@ -255,7 +255,6 @@ shared_examples_for 'an instance with succeeding database' do
 end
 
 describe 'ActiveRecord with real database' do
-  # This is only here to ensure that the shared examples are actually behaving like a real database.
   before(:context) do
     FileUtils.mkdir_p 'tmp'
     ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'tmp/test.db')
@@ -275,6 +274,36 @@ describe 'ActiveRecord with real database' do
   describe 'instance' do
     subject { Chair.new(name: 'Jarl') }
     it_behaves_like 'an instance with succeeding database'
+  end
+
+  describe 'association' do
+    before(:context) do
+      # reopen the chair to add an association
+      class Chair < ActiveRecord::Base
+        has_one :arm_rest, primary_key: :name, foreign_key: :name, dependent: nil
+      end
+      class ArmRest < ActiveRecord::Base
+        has_no_table
+        column :name, :string
+        belongs_to :chair, primary_key: :name, foreign_key: :name
+      end
+    end
+    it 'can be traversed by setting association' do
+      chair = Chair.create(name: 'A')
+      arm_rest = ArmRest.new(chair: chair)
+      expect(arm_rest.chair).to eq chair
+    end
+    it 'sets foreign key from association' do
+      chair = Chair.create(name: 'A')
+      arm_rest = ArmRest.new(chair: chair)
+      expect(arm_rest.name).to eq 'A'
+    end
+    it 'can be traversed by setting foreign key' do
+      pending('more effort to implement')
+      Chair.create(name: 'B')
+      arm_rest = ArmRest.new(name: 'B')
+      expect { arm_rest.chair }.to_not raise_error
+    end
   end
 end
 
@@ -304,5 +333,19 @@ describe 'Tablefree model can access connection transaction' do
   describe '.connection' do
     subject { Chair.connection.current_transaction }
     it { is_expected.to be_a(ActiveRecord::Tablefree::Transaction) }
+  end
+end
+
+describe 'Bad column type' do
+  describe 'association' do
+    subject { -> {
+      class ArmRest < ActiveRecord::Base
+        has_no_table
+        column :chair_id
+      end
+    }}
+    it 'raises an InvalidColumnType error' do
+      expect { subject.call }.to raise_error ActiveRecord::Tablefree::InvalidColumnType, 'sql_type is  (NilClass), which is not supported'
+    end
   end
 end

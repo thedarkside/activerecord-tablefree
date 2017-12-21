@@ -36,6 +36,7 @@ module ActiveRecord
   module Tablefree
     class NoDatabase < StandardError; end
     class Unsupported < StandardError; end
+    class InvalidColumnType < ArgumentError; end
 
     def self.included(base) #:nodoc:
       base.send :extend, ActsMethods
@@ -86,7 +87,9 @@ module ActiveRecord
 
       # Register a new column.
       def column(name, sql_type = nil, default = nil, null = true)
-        cast_type = "ActiveRecord::Type::#{sql_type.to_s.camelize}".constantize.new
+        cast_class = "ActiveRecord::Type::#{sql_type.to_s.camelize}".constantize rescue nil
+        raise InvalidColumnType, "sql_type is #{sql_type} (#{sql_type.class}), which is not supported" unless cast_class.respond_to?(:new)
+        cast_type = cast_class.new
         tablefree_options[:columns_hash][name.to_s] = ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, cast_type, sql_type.to_s, null)
       end
 

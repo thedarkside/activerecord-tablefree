@@ -64,23 +64,25 @@ Define a model like this:
       has_no_table
       column :name, :string
       column :email, :string
-      validates_presence_of :name, :email
+      column :message, :string
+      validates_presence_of :name, :email, :message
     end
 
 You can now use the model in a view like this:
 
-    <%= form_for :message, @message do |f| %>
+    <%= form_for :contact_message, @contact_message do |f| %>
       Your name: <%= f.text_field :name %>
       Your email: <%= f.text_field :email %>
+      Your message: <%= f.text_field :message %>
     <% end %>
 
 And in the controller:
 
-    def message
-      @message = ContactMessage.new
+    def contact_message
+      @contact_message = ContactMessage.new
       if request.post?
-        @message.attributes = params[:message]
-        if @message.valid?
+        @contact_message.attributes = params[:contact_message]
+        if @contact_message.valid?
           # Process the message...
         end
       end
@@ -90,6 +92,34 @@ If you wish (this is not recommended), you can pretend you have a succeeding dat
 
     has_no_table :database => :pretend_success
 
+Associations
+------------
+
+Some model as before, but with an association to a real DB-backed model.
+
+```
+    class ContactMessage < ActiveRecord::Base
+      has_no_table
+      column :message, :string
+      column :email, :string
+      validates_presence_of :name, :email
+      belongs_to :contact, foreign_key: :email, primary_key: :email
+    end
+
+    class Contact < ActiveRecord::Base
+      validates_presence_of :name, :email
+      has_one :contact_message, foreign_key: :email, primary_key: :email, dependent: nil
+    end
+```
+
+Obviously the association is not full-fledged, as some traversals just won't make sense with one side not being loadable from the database.  From the `ContactMessage` you can get to the `Contact`, but not vice versa.
+
+```
+>> contact = Contact.new(name: 'Boo', email: 'boo@example.com')
+>> contact_message = ContactMessage.new(contact: contact)
+>> contact_message.email
+=> 'boo@example.com'
+```
 
 Development
 -----------
