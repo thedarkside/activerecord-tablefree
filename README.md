@@ -7,13 +7,13 @@ ActiveRecord Tablefree
 | license                 |  MIT                    |
 | download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/activerecord-tablefree.png)](https://rubygems.org/gems/activerecord-tablefree) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
-| dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/boltthreads/activerecord-tablefree.svg)](https://gemnasium.com/github.com/boltthreads/activerecord-tablefree) |
-| code quality            |  [![Code Climate](https://codeclimate.com/github/boltthreads/activerecord-tablefree.png)](https://codeclimate.com/github/boltthreads/activerecord-tablefree) |
-| continuous integration  |  [![Build Status](https://travis-ci.org/boltthreads/activerecord-tablefree.svg?branch=master)](https://travis-ci.org/boltthreads/activerecord-tablefree) |
-| test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/boltthreads/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/boltthreads/activerecord-tablefree?branch=master) |
-| triage helpers          |  [![Issue Triage](https://www.codetriage.com/boltthreads/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/boltthreads/activerecord-tablefree) |
-| homepage                |  [https://github.com/boltthreads/activerecord-tablefree](https://github.com/boltthreads/activerecord-tablefree) |
-| documentation           |  [http://rdoc.info/github/boltthreads/activerecord-tablefree/frames](http://rdoc.info/github/boltthreads/activerecord-tablefree/frames) |
+| dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/pboling/activerecord-tablefree.svg)](https://gemnasium.com/github.com/pboling/activerecord-tablefree) |
+| code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/activerecord-tablefree.png)](https://codeclimate.com/github/pboling/activerecord-tablefree) |
+| continuous integration  |  [![Build Status](https://travis-ci.org/pboling/activerecord-tablefree.svg?branch=master)](https://travis-ci.org/pboling/activerecord-tablefree) |
+| test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/pboling/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/pboling/activerecord-tablefree?branch=master) |
+| triage helpers          |  [![Issue Triage](https://www.codetriage.com/pboling/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/pboling/activerecord-tablefree) |
+| homepage                |  [https://github.com/pboling/activerecord-tablefree](https://github.com/pboling/activerecord-tablefree) |
+| documentation           |  [http://rdoc.info/github/pboling/activerecord-tablefree/frames](http://rdoc.info/github/pboling/activerecord-tablefree/frames) |
 
 A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
@@ -45,11 +45,13 @@ Supported ruby version are
   * **2.2.x** series higher than 2.2.2 (a Rails 5 requirement)
   * **2.3.x** series
   * **2.4.x** series
+  * **2.5.x** series
 
 Supported ActiveRecord versions are
 
   * **5.0.x** series
   * **5.1.x** series
+  * **5.2.x** series
 
 If you are using an older ActiveRecord version you can use the gem [`activerecord-tableless`](https://github.com/softace/activerecord-tableless)
 
@@ -126,7 +128,7 @@ Development
 
 To start developing, please download the source code
 
-    git clone git://github.com/boltthreads/activerecord-tablefree.git
+    git clone git://github.com/pboling/activerecord-tablefree.git
 
 Install development libraries
 
@@ -175,7 +177,7 @@ existence of this gem is still justified.
 
 Rails 3 and 4 support is provided in the [activerecord-tableless gem](https://github.com/softace/activerecord-tableless), by [Jarl Friis](https://github.com/jarl-dk).
 
-This gem is a Rails 5 compatible update, and renaming of that gem.
+This gem is a Rails 5+ compatible update, and renaming of that gem.
 
 For a history of technical implementation details feel free to take a
 look in the git log :-)

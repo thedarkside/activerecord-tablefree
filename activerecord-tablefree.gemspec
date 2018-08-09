@@ -1,6 +1,8 @@
 # -*- ruby -*-
-$LOAD_PATH.push File.expand_path('../lib', __FILE__)
-require 'activerecord-tablefree/version'
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+require 'activerecord/tablefree/version'
 
 Gem::Specification.new do |gem|
   gem.name          = 'activerecord-tablefree'
