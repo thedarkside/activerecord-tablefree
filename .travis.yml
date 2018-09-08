@@ -30,12 +30,10 @@ sudo: false
 
 rvm:
   # latest versions on travis-ci as of 2018.09.04
-  - jruby-9.1.9.0
   - ruby-2.2.10
   - ruby-2.3.7
   - ruby-2.4.4
   - ruby-2.5.1
-  - jruby-head
   - ruby-head
 gemfile:
   - gemfiles/rails50.gemfile
@@ -44,7 +42,6 @@ gemfile:
 
 matrix:
   allow_failures:
-  - rvm: jruby-head
   - rvm: ruby-head
   fast_finish: true
   exclude:
@@ -52,14 +49,6 @@ matrix:
   # ruby-2.3.7 tests on all versions
   # ruby-2.4.4 tests on all versions
   # ruby-2.5.1 tests on all versions
-  # jruby-9.1.9.0 only tests on rails 5.1+
-  - rvm: jruby-9.1.9.0
-    gemfile: gemfiles/rails_5_0.gemfile
-  # jruby-head only tests on rails 5.2+
-  - rvm: jruby-head
-    gemfile: gemfiles/rails_5_0.gemfile
-  - rvm: jruby-head
-    gemfile: gemfiles/rails_5_1.gemfile
   # ruby-head only tests on rails 5.2+
   - rvm: ruby-head
     gemfile: gemfiles/rails_5_0.gemfile
