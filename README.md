@@ -4,14 +4,14 @@ ActiveRecord Tablefree
 | Project                 |  ActiveRecord Tablefree |
 |------------------------ | ----------------------- |
 | gem name                |  activerecord-tablefree |
-| license                 |  MIT                    |
+| license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)                    |
 | download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/activerecord-tablefree.png)](https://rubygems.org/gems/activerecord-tablefree) |
 | version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
-| dependencies            |  [![Dependency Status](https://gemnasium.com/badges/github.com/pboling/activerecord-tablefree.svg)](https://gemnasium.com/github.com/pboling/activerecord-tablefree) |
-| code quality            |  [![Code Climate](https://codeclimate.com/github/pboling/activerecord-tablefree.png)](https://codeclimate.com/github/pboling/activerecord-tablefree) |
+| dependencies            |  [![Depfu](https://badges.depfu.com/badges/a34c123a78a86496bbc2163b801089dd/count.svg)](https://depfu.com/github/pboling/activerecord-tablefree?project=Bundler) |
+| maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/9354ad73daf12d480e81/maintainability)](https://codeclimate.com/github/pboling/activerecord-tablefree/maintainability)
+| code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/activerecord-tablefree/badges/users.svg)](https://www.codetriage.com/pboling/activerecord-tablefree) |
 | continuous integration  |  [![Build Status](https://travis-ci.org/pboling/activerecord-tablefree.svg?branch=master)](https://travis-ci.org/pboling/activerecord-tablefree) |
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/pboling/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/pboling/activerecord-tablefree?branch=master) |
-| triage helpers          |  [![Issue Triage](https://www.codetriage.com/pboling/activerecord-tablefree/badges/users.png)](https://www.codetriage.com/pboling/activerecord-tablefree) |
 | homepage                |  [https://github.com/pboling/activerecord-tablefree](https://github.com/pboling/activerecord-tablefree) |
 | documentation           |  [http://rdoc.info/github/pboling/activerecord-tablefree/frames](http://rdoc.info/github/pboling/activerecord-tablefree/frames) |
 
