@@ -14,7 +14,6 @@ ActiveRecord Tablefree
 | code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/activerecord-tablefree/badges/users.svg)](https://www.codetriage.com/pboling/activerecord-tablefree) |
 | homepage                |  [http://www.railsbling.com/tags/activerecord-tablefree/][homepage] |
 | documentation           |  [http://rdoc.info/github/pboling/activerecord-tablefree/frames][documentation] |
-[documentation]: http://rdoc.info/github/pboling/activerecord-tablefree/frames
 
 A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
