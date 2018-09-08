@@ -24,5 +24,14 @@ module ActiveRecord::Tablefree
     def changed_in_place?(*_args)
       false
     end
+
+    def force_equality?(value)
+      case value
+      when ::Array, ::Range then
+        true
+      else
+        false
+      end
+    end
   end
 end
