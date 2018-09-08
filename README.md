@@ -5,15 +5,16 @@ ActiveRecord Tablefree
 |------------------------ | ----------------------- |
 | gem name                |  activerecord-tablefree |
 | license                 |  [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)                    |
-| download rank           |  [![Total Downloads](https://img.shields.io/gem/rt/activerecord-tablefree.png)](https://rubygems.org/gems/activerecord-tablefree) |
-| version                 |  [![Gem Version](https://badge.fury.io/rb/activerecord-tablefree.png)](http://badge.fury.io/rb/activerecord-tablefree) |
+| download rank           |  [![Downloads Today](https://img.shields.io/gem/rd/activerecord-tablefree.svg)](https://github.com/pboling/activerecord-tablefree) |
+| version                 |  [![Version](https://img.shields.io/gem/v/activerecord-tablefree.svg)](https://rubygems.org/gems/activerecord-tablefree) |
 | dependencies            |  [![Depfu](https://badges.depfu.com/badges/a34c123a78a86496bbc2163b801089dd/count.svg)](https://depfu.com/github/pboling/activerecord-tablefree?project=Bundler) |
 | maintainability         |  [![Maintainability](https://api.codeclimate.com/v1/badges/9354ad73daf12d480e81/maintainability)](https://codeclimate.com/github/pboling/activerecord-tablefree/maintainability)
 | code triage             |  [![Open Source Helpers](https://www.codetriage.com/pboling/activerecord-tablefree/badges/users.svg)](https://www.codetriage.com/pboling/activerecord-tablefree) |
 | continuous integration  |  [![Build Status](https://travis-ci.org/pboling/activerecord-tablefree.svg?branch=master)](https://travis-ci.org/pboling/activerecord-tablefree) |
 | test coverage           |  [![Coverage Status](https://coveralls.io/repos/github/pboling/activerecord-tablefree/badge.png?branch=master)](https://coveralls.io/github/pboling/activerecord-tablefree?branch=master) |
-| homepage                |  [https://github.com/pboling/activerecord-tablefree](https://github.com/pboling/activerecord-tablefree) |
-| documentation           |  [http://rdoc.info/github/pboling/activerecord-tablefree/frames](http://rdoc.info/github/pboling/activerecord-tablefree/frames) |
+| homepage                |  [http://www.railsbling.com/tags/activerecord-tablefree/][homepage] |
+| documentation           |  [http://rdoc.info/github/pboling/activerecord-tablefree/frames][documentation] |
+[documentation]: http://rdoc.info/github/pboling/activerecord-tablefree/frames
 
 A simple implementation of the ActiveRecord Tableless pattern for any
 Rails project or other Ruby project that uses ActiveRecord.
@@ -182,11 +183,37 @@ This gem is a Rails 5+ compatible update, and renaming of that gem.
 For a history of technical implementation details feel free to take a
 look in the git log :-)
 
+## Versioning
+
+This library aims to adhere to [Semantic Versioning 2.0.0][semver].
+Violations of this scheme should be reported as bugs. Specifically,
+if a minor or patch version is released that breaks backward
+compatibility, a new version should be immediately released that
+restores compatibility. Breaking changes to the public API will
+only be introduced with new major versions.
+
+As a result of this policy, you can (and should) specify a
+dependency on this gem using the [Pessimistic Version Constraint][pvc] with two digits of precision.
+
+For example:
+
+```ruby
+spec.add_dependency 'activerecord-tablefree', '~> 3.0'
+```
 
 Copyright
 ---------
 
-Copyright (c) Jarl Friis.
-Copyright (c) Peter Boling, Bolt Threads.
+* Copyright (c) 2008 - 2009 Kenneth Kalmer
+* Copyright (c) 2012 - 2017 Jarl Friis
+* Copyright (c) 2017 - 2018 [Peter H. Boling][peterboling] of [Rails Bling][railsbling]
 
-The license is MIT.  See LICENSE.txt for further details.
+The license is MIT.  See [LICENSE.txt][license] for further details.
+
+[license]: LICENSE.txt
+[semver]: http://semver.org/
+[pvc]: http://guides.rubygems.org/patterns/#pessimistic-version-constraint
+[railsbling]: http://www.railsbling.com
+[peterboling]: http://www.peterboling.com
+[documentation]: http://rdoc.info/github/pboling/activerecord-tablefree/frames
+[homepage]: http://www.railsbling.com/tags/activerecord-tablefree/
