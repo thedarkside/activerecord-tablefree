@@ -298,12 +298,13 @@ describe 'ActiveRecord with real database' do
       arm_rest = ArmRest.new(chair: chair)
       expect(arm_rest.name).to eq 'A'
     end
-    it 'can be traversed by setting foreign key' do
-      pending('more effort to implement')
-      Chair.create(name: 'B')
-      arm_rest = ArmRest.new(name: 'B')
-      expect { arm_rest.chair }.to_not raise_error
-    end
+    # This works on Rails 5.0, but not newer, because of the statement cache.
+    # it 'can be traversed by setting foreign key' do
+    #   chair = Chair.create(name: 'B')
+    #   arm_rest = ArmRest.new(name: 'B')
+    #   expect { arm_rest.chair }.to_not raise_error
+    #   expect(arm_rest.chair).to eq(chair)
+    # end
   end
 end
 
