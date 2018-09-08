@@ -3,4 +3,4 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in activerecord-tablefree.gemspec
 gemspec
 
-gem 'byebug'
+gem 'byebug', platform: :mri
