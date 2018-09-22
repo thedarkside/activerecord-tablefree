@@ -4,6 +4,11 @@ module ActiveRecord::Tablefree
       true
     end
 
+    # Needed for Rails 5.2 when using numericality validator
+    def value_constructed_by_mass_assignment?(_value)
+      false
+    end
+
     # Needed for Rails 5.0
     def serialize(args)
       args
